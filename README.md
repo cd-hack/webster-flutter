@@ -2,15 +2,13 @@
 
 A new Flutter project.
 
-## Getting Started
+## Points to Ponder
 
-This project is a starting point for a Flutter application.
+- Try to use lower-case-hiphen-seperated names for files.
+- Try to Create appropriate directory for the files.
+- Try to Use meaningful names for variables and functions.
+- Try to use the theme color (Theme.of(context)) instead of hardcoded colors.
+- Try to use the theme styles for text (Theme.of(context)) instead of hardcoded style.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Try to make a branch for PR and merge later if no conflicts.
