@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webster/pages/my-websites-page.dart';
+import 'package:webster/pages/profile-page.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/homePage';
@@ -20,7 +21,7 @@ class HomeState extends State<Home> {
     Text("DashBoard"),
     MyWebsitesPage(),
     Text("Settings"),
-    Text("Profile")
+    ProfilePage()
   ];
   final List<String> _title = [
     'Dashboard',

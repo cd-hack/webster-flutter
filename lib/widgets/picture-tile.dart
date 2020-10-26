@@ -38,7 +38,10 @@ class PictureTile extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.5),
                     child: Text(
                       tileText,
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          .copyWith(color: Colors.white),
                     )),
               )
             ],

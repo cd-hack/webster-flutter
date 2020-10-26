@@ -11,6 +11,10 @@ class MyWebsitesPage extends StatelessWidget {
           assetImageUrl: 'assets/images/fashion-banner.jpg',
           tileText: "FASHIONSTORE",
         ),
+        PictureTile(
+          assetImageUrl: 'assets/images/vegetables-banner.jpg',
+          tileText: "VEGSTORE",
+        ),
       ],
     );
   }
