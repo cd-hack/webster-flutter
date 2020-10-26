@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webster/pages/my-websites-page.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/homePage';
@@ -15,15 +16,20 @@ class HomeState extends State<Home> {
     setState(() => selectedIndex = index);
   }
 
-  final List<Widget> _widgets = [];
+  final List<Widget> _widgets = [
+    Text("DashBoard"),
+    MyWebsitesPage(),
+    Text("Settings"),
+    Text("Profile")
+  ];
   final List<String> _title = [
-    'Home',
+    'Dashboard',
     'My Websites',
     'Settings',
     'User Profile'
   ];
   final List<IconData> _bottomAppBar = [
-    Icons.home,
+    Icons.dashboard,
     Icons.web_asset,
     Icons.settings,
     Icons.account_circle
@@ -35,9 +41,7 @@ class HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(_title[selectedIndex]),
       ),
-      body: Center(
-        child: Text('Hello'),
-      ),
+      body: _widgets[selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: null,
@@ -67,7 +71,7 @@ class HomeState extends State<Home> {
                         icon: Icon(
                           _bottomAppBar[index],
                           color: selectedIndex == index
-                              ? Colors.blueAccent[700]
+                              ? Theme.of(context).primaryColor
                               : Colors.grey.shade400,
                         ),
                       ),
