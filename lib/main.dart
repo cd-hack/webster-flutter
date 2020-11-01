@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webster/pages/form-page.dart';
 
 import './pages/home-page.dart';
 
@@ -20,7 +21,10 @@ class MyApp extends StatelessWidget {
             headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
             bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
           )),
-      home: Home(),
+      routes: {
+        '/': (context) => Home(),
+        FormPage.routeName: (context) => FormPage(),
+      },
     );
   }
 }
