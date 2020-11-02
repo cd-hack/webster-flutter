@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webster/pages/my-websites-page.dart';
 import 'package:webster/pages/profile-page.dart';
+import 'add-new-form-page.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/homePage';
@@ -40,12 +41,13 @@ class HomeState extends State<Home> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         title: Text(_title[selectedIndex]),
       ),
       body: _widgets[selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () => Navigator.of(context).pushNamed(FormPage.routeName),
         child: Container(
           margin: EdgeInsets.all(15.0),
           child: Icon(Icons.add),
@@ -72,7 +74,7 @@ class HomeState extends State<Home> {
                         icon: Icon(
                           _bottomAppBar[index],
                           color: selectedIndex == index
-                              ? Theme.of(context).primaryColor
+                              ? Colors.black //Theme.of(context).primaryColor
                               : Colors.grey.shade400,
                         ),
                       ),
