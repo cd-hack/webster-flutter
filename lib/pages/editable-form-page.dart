@@ -1,25 +1,36 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:webster/pages/add-more-datials-form-page.dart';
+import 'package:image_picker/image_picker.dart';
 
-class FormPage extends StatefulWidget {
-  static const routeName = '/formPage';
-  final int websiteType;
-  FormPage({this.websiteType});
+import 'add-more-datials-form-page.dart';
 
+class EditableForm extends StatefulWidget {
+  static const routeName = '/edit-page';
   @override
-  _FormPageState createState() => _FormPageState();
+  _EditableFormState createState() => _EditableFormState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _EditableFormState extends State<EditableForm> {
+  File carousel_image;
+
+  Future getImage() async {
+    final uploaded_image =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      carousel_image = File(uploaded_image.path);
+    });
+  }
+
   var currentDropDownValue = 0;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final titleController = TextEditingController();
-  final aboutController = TextEditingController();
-  final instagramIdController = TextEditingController();
-  final facebookIdController = TextEditingController();
-  final cat3Controller = TextEditingController();
-  final cat2Controller = TextEditingController();
-  final cat1Controller = TextEditingController();
+  final titleController = TextEditingController(text: "Demo");
+  final aboutController = TextEditingController(text: "Demo");
+  final instagramIdController = TextEditingController(text: "Demo");
+  final facebookIdController = TextEditingController(text: "Demo");
+  final cat3Controller = TextEditingController(text: "Demo");
+  final cat2Controller = TextEditingController(text: "Demo");
+  final cat1Controller = TextEditingController(text: "Demo");
 
   @override
   void dispose() {
@@ -44,19 +55,17 @@ class _FormPageState extends State<FormPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.websiteType);
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Add Details"),
-      ),
+      appBar: AppBar(),
       body: Container(
-        margin: EdgeInsets.all(5),
-        //width: MediaQuery.of(context).size.width * 0.9,
-        //color: Colors.yellow,
         child: Form(
             key: this._formKey,
             child: ListView(
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("You can edit the following fields:"),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
@@ -198,29 +207,43 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 70, vertical: 5),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    color: Colors.white,
+                    onPressed: getImage,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/upload-icon.png",
+                          height: MediaQuery.of(context).size.height * 0.05,
+                        ),
+                        Text("Upload Carousel Image")
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  child: carousel_image == null
+                      ? Image.asset('assets/images/no-image.png')
+                      : Image.file(carousel_image),
+                ),
               ],
             )),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: RaisedButton(
-          padding: const EdgeInsets.all(15.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          color: Theme.of(context).accentColor,
-          onPressed: () {
-            if (_formKey.currentState.validate())
-              Navigator.of(context)
-                  .pushReplacementNamed(AddMoreDetailsPage.routeName);
-          },
-          child: Text(
-            "GENERATE WEBSITE",
-            style: TextStyle(color: Colors.white),
-          ),
+          onPressed: () {},
+          color: Colors.black,
+          textColor: Colors.white,
+          child: Text("UPDATE DETAILS"),
         ),
       ),
-          
     );
   }
 }

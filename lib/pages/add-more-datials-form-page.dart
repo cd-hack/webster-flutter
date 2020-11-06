@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -24,54 +23,59 @@ class _AddMoreDetailsPageState extends State<AddMoreDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Advanced"),
-      ),
-      body: Container(
-        child: ListView(
-          children: [
-            Container(
-              child: carousel_image == null
-                  ? Image.asset('assets/images/no-image.png')
-                  : Image.file(carousel_image),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 5),
-              child: RaisedButton(
-                color: Colors.white,
-                onPressed: getImage,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/images/upload-icon.png",
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    Text("Upload Carousel Image")
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
-              child: RaisedButton(
-                color: Colors.black,
-                onPressed: () {
-                  showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) => LoadingDialogue());
-                },
-                child: Text(
-                  "START FETCHING PRODUCTS",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            )
-          ],
+        appBar: AppBar(
+          title: Text("Advanced"),
         ),
-      ),
-    );
+        body: Container(
+          child: ListView(
+            children: [
+              Container(
+                child: carousel_image == null
+                    ? Image.asset('assets/images/no-image.png')
+                    : Image.file(carousel_image),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 70, vertical: 5),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  color: Colors.white,
+                  onPressed: getImage,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/upload-icon.png",
+                        height: MediaQuery.of(context).size.height * 0.05,
+                      ),
+                      Text("Upload Carousel Image")
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RaisedButton(
+            padding: const EdgeInsets.all(15.0),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            color: Colors.black,
+            onPressed: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => LoadingDialogue());
+            },
+            child: Text(
+              "START FETCHING PRODUCTS",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ));
   }
 }
 
@@ -82,4 +86,4 @@ class LoadingDialogue extends StatelessWidget {
       content: Image.asset("assets/images/fetching.gif"),
     );
   }
-}
+} 
