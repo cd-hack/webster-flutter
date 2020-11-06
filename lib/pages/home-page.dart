@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:webster/pages/dashboard-page.dart';
 import 'package:webster/pages/my-websites-page.dart';
 import 'package:webster/pages/profile-page.dart';
+import 'package:webster/pages/select-category-page.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/homePage';
@@ -18,7 +20,7 @@ class HomeState extends State<Home> {
   }
 
   final List<Widget> _widgets = [
-    Text("DashBoard"),
+    DashBoard(),
     MyWebsitesPage(),
     Text("Settings"),
     ProfilePage()
@@ -40,12 +42,14 @@ class HomeState extends State<Home> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         title: Text(_title[selectedIndex]),
       ),
       body: _widgets[selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () =>
+            Navigator.of(context).pushNamed(SelectCategory.routeName),
         child: Container(
           margin: EdgeInsets.all(15.0),
           child: Icon(Icons.add),
@@ -72,7 +76,7 @@ class HomeState extends State<Home> {
                         icon: Icon(
                           _bottomAppBar[index],
                           color: selectedIndex == index
-                              ? Theme.of(context).primaryColor
+                              ? Colors.black //Theme.of(context).primaryColor
                               : Colors.grey.shade400,
                         ),
                       ),

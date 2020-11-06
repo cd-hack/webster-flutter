@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:webster/pages/form-page.dart';
+import 'package:webster/pages/add-new-form-page.dart';
+import 'package:webster/pages/editable-form-page.dart';
 import '../widgets/picture-tile.dart';
 
 class MyWebsitesPage extends StatelessWidget {
@@ -9,15 +10,11 @@ class MyWebsitesPage extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 1, vertical: 10),
       children: [
         InkWell(
-          onTap: () => Navigator.of(context).pushNamed(FormPage.routeName),
+          onTap: () => Navigator.of(context).pushNamed(EditableForm.routeName),
           child: PictureTile(
-            assetImageUrl: 'assets/images/fashion-banner.jpg',
-            tileText: "FASHIONSTORE",
+            assetImageUrl: 'assets/images/vegetables-banner.jpg',
+            tileText: "VEG STORE",
           ),
-        ),
-        PictureTile(
-          assetImageUrl: 'assets/images/vegetables-banner.jpg',
-          tileText: "VEGSTORE",
         ),
       ],
     );

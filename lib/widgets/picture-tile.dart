@@ -26,21 +26,21 @@ class PictureTile extends StatelessWidget {
                 child: Image.asset(
                   assetImageUrl,
                   width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
               Positioned(
                 bottom: 15,
                 child: Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.04,
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.all(5),
-                    color: Colors.grey.withOpacity(0.5),
+                    color: Colors.black.withOpacity(0.5),
                     child: Text(
                       tileText,
                       style: Theme.of(context)
                           .textTheme
-                          .headline4
+                          .headline5
                           .copyWith(color: Colors.white),
                     )),
               )
