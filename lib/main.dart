@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:webster/pages/add-more-datials-form-page.dart';
 import 'package:webster/pages/add-new-form-page.dart';
 import 'package:webster/pages/editable-form-page.dart';
 import 'package:webster/pages/select-category-page.dart';
+import './pages/dashboard-page.dart';
+import './pages/add-category-page.dart';
+import './pages/login-page.dart';
+import './pages/registration-page.dart';
+import './providers/auth.dart';
 
 import './pages/home-page.dart';
 
@@ -27,25 +34,44 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MaterialColor colorCustom = MaterialColor(0xFFFFFFFF, color);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Webster',
-      theme: ThemeData(
-          primarySwatch: colorCustom,
-          accentColor: Colors.black,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          textTheme: TextTheme(
-            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-          )),
-      routes: {
-        '/': (context) => Home(),
-        FormPage.routeName: (context) => FormPage(),
-        SelectCategory.routeName: (context) => SelectCategory(),
-        AddMoreDetailsPage.routeName: (context) => AddMoreDetailsPage(),
-        EditableForm.routeName: (context) => EditableForm(),
-      },
+    return ChangeNotifierProvider(
+      create: (context) => Auth(),
+      child: Consumer<Auth>(
+        builder: (context, value, child) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Webster',
+          theme: ThemeData(
+              primarySwatch: colorCustom,
+              accentColor: Colors.black,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              textTheme: TextTheme(
+                headline1:
+                    TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                headline6:
+                    TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+              )),
+          routes: {
+            "/": (ctx) => FutureBuilder(
+                future: value.isloggedin(),
+                builder: (_, snapshot) =>
+                    snapshot.connectionState == ConnectionState.waiting
+                        ? Scaffold()
+                        : (snapshot.data != null && snapshot.data)
+                            ? Home()
+                            : LoginPage()),
+            Home.routeName: (context) => Home(),
+            FormPage.routeName: (context) => FormPage(),
+            SelectCategory.routeName: (context) => SelectCategory(),
+            AddMoreDetailsPage.routeName: (context) => AddMoreDetailsPage(),
+            EditableForm.routeName: (context) => EditableForm(),
+            DashBoard.routeName: (context) => DashBoard(),
+            AddCategoryPage.routeName: (context) => AddCategoryPage(),
+            LoginPage.routeName: (context) => LoginPage(),
+            RegistrationPage.routeName: (context) => RegistrationPage()
+          },
+        ),
+      ),
     );
   }
 }

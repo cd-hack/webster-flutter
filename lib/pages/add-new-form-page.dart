@@ -13,24 +13,19 @@ class FormPage extends StatefulWidget {
 class _FormPageState extends State<FormPage> {
   var currentDropDownValue = 0;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final websiteid = TextEditingController();
   final titleController = TextEditingController();
   final aboutController = TextEditingController();
   final instagramIdController = TextEditingController();
   final facebookIdController = TextEditingController();
-  final cat3Controller = TextEditingController();
-  final cat2Controller = TextEditingController();
-  final cat1Controller = TextEditingController();
-
+  
   @override
   void dispose() {
     titleController.dispose();
     aboutController.dispose();
     instagramIdController.dispose();
     facebookIdController.dispose();
-    cat1Controller.dispose();
-    cat2Controller.dispose();
-    cat3Controller.dispose();
-    titleController.dispose();
+    websiteid.dispose();
     super.dispose();
   }
 
@@ -41,6 +36,8 @@ class _FormPageState extends State<FormPage> {
     }
     return null;
   }
+
+  Map _detail;
 
   @override
   Widget build(BuildContext context) {
@@ -141,11 +138,11 @@ class _FormPageState extends State<FormPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    controller: cat1Controller,
+                    controller: websiteid,
                     validator: isEmptyValidator,
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
-                      labelText: "Category 1",
+                      labelText: "Website ID",
                       focusedErrorBorder:
                           OutlineInputBorder(borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
@@ -158,46 +155,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: cat2Controller,
-                    validator: isEmptyValidator,
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.grey),
-                      labelText: "Category 2",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
-                      errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: cat3Controller,
-                    validator: isEmptyValidator,
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.grey),
-                      labelText: "Category 3",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
-                      errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0),
-                      ),
-                    ),
-                  ),
-                ),
+                
               ],
             )),
       ),
@@ -211,16 +169,24 @@ class _FormPageState extends State<FormPage> {
           color: Theme.of(context).accentColor,
           onPressed: () {
             if (_formKey.currentState.validate())
-              Navigator.of(context)
-                  .pushReplacementNamed(AddMoreDetailsPage.routeName);
+              _detail = {
+                "title": titleController.text,
+                "about": aboutController.text,
+                "ighandle": instagramIdController.text,
+                "fburl": facebookIdController.text,
+                "websiteid": websiteid.text,
+                "lnurl":"",
+              };
+            Navigator.of(context).pushReplacementNamed(
+                AddMoreDetailsPage.routeName,
+                arguments: _detail);
           },
           child: Text(
-            "GENERATE WEBSITE",
+            "NEXT",
             style: TextStyle(color: Colors.white),
           ),
         ),
       ),
-          
     );
   }
 }
