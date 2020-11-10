@@ -33,13 +33,13 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.looks_one),
-            title: Text("Option 1"),
+            leading: Icon(Icons.email),
+            title: Text("Change Email"),
             trailing: Icon(Icons.arrow_forward_ios),
           ),
           ListTile(
-            leading: Icon(Icons.looks_two),
-            title: Text("Option 2"),
+            leading: Icon(Icons.phone_android ),
+            title: Text("Change Phone number"),
             trailing: Icon(Icons.arrow_forward_ios),
           ),
           ListTile(

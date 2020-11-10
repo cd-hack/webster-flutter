@@ -64,9 +64,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(30),
-                  height: 0.8 * height,
-                  width: 0.8 * height,
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                  height: 0.9 * height,
+                  width: 0.85 * width,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: Colors.white),
@@ -94,7 +94,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                     textInputAction: TextInputAction.next,
                                     onFieldSubmitted: (_) =>
                                         _phone.requestFocus(),
-                                    validator: (value) => null,
+                                    validator: (value) =>
+                                        !EmailValidator.validate(value)
+                                            ? "Invalid Email"
+                                            : null,
                                     onSaved: (newValue) {
                                       print(newValue);
                                       _check['email'] = newValue;
@@ -151,7 +154,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   decoration: InputDecoration(
                                       filled: true,
                                       hintText: 'Enter your Account Number',
-                                      prefixIcon: Icon(Icons.person),
+                                      prefixIcon: Icon(Icons.account_balance),
                                       fillColor: Colors.grey[300],
                                       border: OutlineInputBorder(
                                           borderRadius:
@@ -164,7 +167,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                           ? "Invalid Account Number"
                                           : null,
                                   onSaved: (newValue) =>
-                                      _check['name'] = newValue,
+                                      _check['accNo'] = newValue,
                                   focusNode: _accNo,
                                 ),
                                 SizedBox(
@@ -174,7 +177,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   decoration: InputDecoration(
                                       filled: true,
                                       hintText: 'Enter your IFSC Code',
-                                      prefixIcon: Icon(Icons.person),
+                                      prefixIcon: Icon(Icons.code),
                                       fillColor: Colors.grey[300],
                                       border: OutlineInputBorder(
                                           borderRadius:
@@ -198,7 +201,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   decoration: InputDecoration(
                                       filled: true,
                                       hintText: 'Enter your Password Code',
-                                      prefixIcon: Icon(Icons.person),
+                                      prefixIcon: Icon(Icons.lock),
                                       fillColor: Colors.grey[300],
                                       border: OutlineInputBorder(
                                           borderRadius:
@@ -221,7 +224,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   decoration: InputDecoration(
                                       filled: true,
                                       hintText: 'Confirm your Password',
-                                      prefixIcon: Icon(Icons.person),
+                                      prefixIcon: Icon(Icons.lock),
                                       fillColor: Colors.grey[300],
                                       border: OutlineInputBorder(
                                           borderRadius:
@@ -281,8 +284,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                                       .then((value) {
                                                     if (value)
                                                       Navigator.of(context)
-                                                          .pushReplacementNamed(
-                                                              Home.routeName);
+                                                          .pushNamedAndRemoveUntil(
+                                                              Home.routeName,
+                                                              (Route<dynamic>
+                                                                      route) =>
+                                                                  false);
                                                     setState(() {
                                                       _isloading = false;
                                                     });
@@ -305,13 +311,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                               child: Text('Login Instead'))
                                         ],
                                       )
-                                    : CircularProgressIndicator()
+                                    : Center(child: CircularProgressIndicator())
                               ],
                             ),
                           ),
                         ],
                       )),
-                )
+                ),
               ],
             ))));
   }

@@ -12,10 +12,11 @@ class Auth with ChangeNotifier {
   get email => _email;
 
   Future<bool> login(String email, String password) async {
-    final url = 'http://192.168.1.4:8000/client/login/';
+    final url = 'http://192.168.1.3:8000/client/login/';
     try {
       final response =
           await http.post(url, body: {'username': email, 'password': password});
+      print(response.body);
       final jresponse = json.decode(response.body) as Map;
       if (jresponse.containsKey('non_field_errors'))
         throw (jresponse['non_field_errors'][0]);
@@ -38,25 +39,38 @@ class Auth with ChangeNotifier {
       String accNo,
       String ifsc,
       String phone}) async {
-    const url = 'http://192.168.1.4:8000/client/user/';
+    const url = 'http://192.168.1.3:8000/client/user/';
     try {
-      final response = await http.post(url, body: {
-        'email': email,
-        'name': name,
-        'password': password,
-        'accNo': accNo,
-        'ifsc': ifsc,
-        'phone': phone
-      });
-      final jresponse = json.decode(response.body) as Map;
+      print({
+            'email': email,
+            'name': name,
+            'password': password,
+            'accNo': accNo,
+            'ifsc': ifsc,
+            'phone': phone,
+            'is_client': true,
+            'is_user': false,
+            'plan': 1
+          });
+      final response = await http.post(url,
+          body: json.encode({
+            'email': email,
+            'name': name,
+            'password': password,
+            'accNo': accNo,
+            'ifsc': ifsc,
+            'phone': phone,
+            'is_client': true,
+            'is_user': false,
+            'plan': 1
+          }),headers: {'Content-Type':'application/json'});
+      final jresponse = json.decode(response.body);
+      print(jresponse);
       if (jresponse.containsKey('status') && jresponse['status'] == 'failed')
         throw (jresponse['message']);
       else {
-        print(jresponse);
-        _token = jresponse['token'];
-        _email = email;
-        await _saveToken();
-        return true;
+        final a = login(email, password);
+        return a;
       }
     } catch (e) {
       throw (e.toString());

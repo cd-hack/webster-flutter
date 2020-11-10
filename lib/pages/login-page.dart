@@ -68,101 +68,103 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: Colors.white),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    TextField(
-                      controller: pno,
-                      decoration: InputDecoration(
-                          filled: true,
-                          hintText: 'Enter your E-mail address',
-                          errorText:
-                              ispnoerror ? 'Invalid E-mail address' : null,
-                          prefixIcon: Icon(Icons.account_circle),
-                          fillColor: Colors.grey[300],
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide.none)),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      obscureText: true,
-                      controller: password,
-                      decoration: InputDecoration(
-                          filled: true,
-                          hintText: 'Enter your Password',
-                          errorText:
-                              ispassworderror ? 'Invalid Password' : null,
-                          prefixIcon: Icon(Icons.lock),
-                          fillColor: Colors.grey[300],
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide.none)),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    !_isloading
-                        ? Column(
-                            children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black,
-                                ),
-                                width: 0.3 * width,
-                                child: MaterialButton(
-                                  child: Text(
-                                    'Login',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                child: SingleChildScrollView(
+                                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      TextField(
+                        controller: pno,
+                        decoration: InputDecoration(
+                            filled: true,
+                            hintText: 'Enter your E-mail address',
+                            errorText:
+                                ispnoerror ? 'Invalid E-mail address' : null,
+                            prefixIcon: Icon(Icons.account_circle),
+                            fillColor: Colors.grey[300],
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide.none)),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        obscureText: true,
+                        controller: password,
+                        decoration: InputDecoration(
+                            filled: true,
+                            hintText: 'Enter your Password',
+                            errorText:
+                                ispassworderror ? 'Invalid Password' : null,
+                            prefixIcon: Icon(Icons.lock),
+                            fillColor: Colors.grey[300],
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide.none)),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      !_isloading
+                          ? Column(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.black,
                                   ),
-                                  onPressed: () {
-                                    print('kona');
-                                    setState(() {
-                                      ispnoerror =
-                                          EmailValidator.validate(pno.text);
-                                      ispassworderror =
-                                          password.text.length > 7;
-                                      print(ispnoerror);
-                                      print(ispassworderror);
-                                    });
-                                    if (!ispnoerror && !ispassworderror) {
+                                  width: 0.3 * width,
+                                  child: MaterialButton(
+                                    child: Text(
+                                      'Login',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () {
+                                      print('kona');
                                       setState(() {
-                                        _isloading = true;
+                                        ispnoerror =
+                                            false;
+                                        ispassworderror =
+                                            false;
+                                        print(ispnoerror);
+                                        print(ispassworderror);
                                       });
-                                      Provider.of<Auth>(context, listen: false)
-                                          .login(pno.text, password.text)
-                                          .then((value) {
-                                        if (value)
-                                          Navigator.of(context)
-                                              .pushReplacementNamed(
-                                                  Home.routeName);
+                                      if (!ispnoerror && !ispassworderror) {
                                         setState(() {
-                                          _isloading = false;
+                                          _isloading = true;
                                         });
-                                      }).catchError((e) {
-                                        setState(() {
-                                          _isloading = false;
+                                        Provider.of<Auth>(context, listen: false)
+                                            .login(pno.text, password.text)
+                                            .then((value) {
+                                          if (value)
+                                            Navigator.of(context)
+                                                .pushReplacementNamed(
+                                                    Home.routeName);
+                                          setState(() {
+                                            _isloading = false;
+                                          });
+                                        }).catchError((e) {
+                                          setState(() {
+                                            _isloading = false;
+                                          });
+                                          showDialog(
+                                              context: context,
+                                              child: Alertbox(e.toString()));
                                         });
-                                        showDialog(
-                                            context: context,
-                                            child: Alertbox(e.toString()));
-                                      });
-                                    }
-                                  },
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                              FlatButton(
-                                  onPressed: () => Navigator.of(context)
-                                      .pushNamed(RegistrationPage.routeName),
-                                  child: Text('Sign Up here'))
-                            ],
-                          )
-                        : CircularProgressIndicator()
-                  ],
+                                FlatButton(
+                                    onPressed: () => Navigator.of(context)
+                                        .pushNamed(RegistrationPage.routeName),
+                                    child: Text('Sign Up here'))
+                              ],
+                            )
+                          : CircularProgressIndicator()
+                    ],
+                  ),
                 ),
               )
             ],

@@ -42,7 +42,7 @@ class HomeState extends State<Home> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        elevation: 3,
         title: Text(_title[selectedIndex]),
       ),
       body: _widgets[selectedIndex],

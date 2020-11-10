@@ -14,9 +14,9 @@ class SelectCategory extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 1, vertical: 10),
         children: [
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(10),
             child: Text(
-              "Select the category of your page:",
+              "Choose the type of Website:",
               style: Theme.of(context).textTheme.headline5,
             ),
           ),
