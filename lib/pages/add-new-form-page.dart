@@ -18,7 +18,7 @@ class _FormPageState extends State<FormPage> {
   final aboutController = TextEditingController();
   final instagramIdController = TextEditingController();
   final facebookIdController = TextEditingController();
-  
+
   @override
   void dispose() {
     titleController.dispose();
@@ -41,13 +41,14 @@ class _FormPageState extends State<FormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     print(widget.websiteType);
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Details"),
       ),
       body: Container(
-        margin: EdgeInsets.all(5),
+        margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         //width: MediaQuery.of(context).size.width * 0.9,
         //color: Colors.yellow,
         child: Form(
@@ -65,11 +66,16 @@ class _FormPageState extends State<FormPage> {
                       focusedErrorBorder:
                           OutlineInputBorder(borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0),
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          width: 1.0,
+                        ),
                       ),
                     ),
                   ),
@@ -83,13 +89,17 @@ class _FormPageState extends State<FormPage> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "About",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),
@@ -103,13 +113,17 @@ class _FormPageState extends State<FormPage> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Instagram id",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),
@@ -123,13 +137,17 @@ class _FormPageState extends State<FormPage> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "FaceBook id",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),
@@ -143,19 +161,32 @@ class _FormPageState extends State<FormPage> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Website ID",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),
                   ),
                 ),
-                
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Container(
+                    width: double.infinity,
+                    height: 0.2 * height,
+                    decoration: BoxDecoration(
+                        color: Colors.grey[350],
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                )
               ],
             )),
       ),
@@ -175,7 +206,8 @@ class _FormPageState extends State<FormPage> {
                 "ighandle": instagramIdController.text,
                 "fburl": facebookIdController.text,
                 "websiteid": websiteid.text,
-                "lnurl":"",
+                "lnurl": "",
+                "templateType": widget.websiteType
               };
             Navigator.of(context).pushReplacementNamed(
                 AddMoreDetailsPage.routeName,
