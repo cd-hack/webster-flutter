@@ -12,7 +12,7 @@ class Auth with ChangeNotifier {
   get email => _email;
 
   Future<bool> login(String email, String password) async {
-    final url = 'http://192.168.1.3:8000/client/login/';
+    final url = 'http://192.168.1.2:8000/client/login/';
     try {
       final response =
           await http.post(url, body: {'username': email, 'password': password});
@@ -39,19 +39,19 @@ class Auth with ChangeNotifier {
       String accNo,
       String ifsc,
       String phone}) async {
-    const url = 'http://192.168.1.3:8000/client/user/';
+    const url = 'http://192.168.1.2:8000/client/user/';
     try {
       print({
-            'email': email,
-            'name': name,
-            'password': password,
-            'accNo': accNo,
-            'ifsc': ifsc,
-            'phone': phone,
-            'is_client': true,
-            'is_user': false,
-            'plan': 1
-          });
+        'email': email,
+        'name': name,
+        'password': password,
+        'accNo': accNo,
+        'ifsc': ifsc,
+        'phone': phone,
+        'is_client': true,
+        'is_user': false,
+        'plan': 1
+      });
       final response = await http.post(url,
           body: json.encode({
             'email': email,
@@ -63,7 +63,8 @@ class Auth with ChangeNotifier {
             'is_client': true,
             'is_user': false,
             'plan': 1
-          }),headers: {'Content-Type':'application/json'});
+          }),
+          headers: {'Content-Type': 'application/json'});
       final jresponse = json.decode(response.body);
       print(jresponse);
       if (jresponse.containsKey('status') && jresponse['status'] == 'failed')
@@ -91,5 +92,12 @@ class Auth with ChangeNotifier {
       return true;
     } else
       return false;
+  }
+
+  Future<void> logout() async {
+    SharedPreferences shr = await SharedPreferences.getInstance();
+    shr.clear();
+    _token = null;
+    _email = null;
   }
 }

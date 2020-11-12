@@ -3,6 +3,7 @@ import 'package:webster/pages/dashboard-page.dart';
 import 'package:webster/pages/my-websites-page.dart';
 import 'package:webster/pages/profile-page.dart';
 import 'package:webster/pages/select-category-page.dart';
+import 'productlist-page.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/homePage';
@@ -22,19 +23,19 @@ class HomeState extends State<Home> {
   final List<Widget> _widgets = [
     DashBoard(),
     MyWebsitesPage(),
-    Text("Settings"),
+    ProductList(),
     ProfilePage()
   ];
   final List<String> _title = [
     'Dashboard',
     'My Websites',
-    'Settings',
+    'Products',
     'User Profile'
   ];
   final List<IconData> _bottomAppBar = [
     Icons.dashboard,
     Icons.web_asset,
-    Icons.settings,
+    Icons.archive,
     Icons.account_circle
   ];
   @override

@@ -13,7 +13,8 @@ class EditableForm extends StatefulWidget {
 
 class _EditableFormState extends State<EditableForm> {
   File carousel_image;
-
+  Map args;
+  bool _hasloaded = false;
   Future getImage() async {
     final uploaded_image =
         await ImagePicker().getImage(source: ImageSource.gallery);
@@ -24,13 +25,28 @@ class _EditableFormState extends State<EditableForm> {
 
   var currentDropDownValue = 0;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final titleController = TextEditingController(text: "Demo");
-  final aboutController = TextEditingController(text: "Demo");
-  final instagramIdController = TextEditingController(text: "Demo");
-  final facebookIdController = TextEditingController(text: "Demo");
-  final cat3Controller = TextEditingController(text: "Demo");
-  final cat2Controller = TextEditingController(text: "Demo");
-  final cat1Controller = TextEditingController(text: "Demo");
+  TextEditingController titleController,
+      aboutController,
+      instagramIdController,
+      facebookIdController,
+      cat3Controller,
+      cat2Controller,
+      cat1Controller;
+
+  @override
+  void didChangeDependencies() {
+    if (!_hasloaded) {
+      args = ModalRoute.of(context).settings.arguments;
+      titleController = TextEditingController(text: args['title']);
+      aboutController = TextEditingController(text: args['about']);
+      instagramIdController = TextEditingController(text: args['ighandle']);
+      facebookIdController = TextEditingController(text: args['fburl']);
+      cat3Controller = TextEditingController(text: args['title']);
+      cat2Controller = TextEditingController(text: args['title']);
+      cat1Controller = TextEditingController(text: args['title']);
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {
@@ -41,7 +57,6 @@ class _EditableFormState extends State<EditableForm> {
     cat1Controller.dispose();
     cat2Controller.dispose();
     cat3Controller.dispose();
-    titleController.dispose();
     super.dispose();
   }
 

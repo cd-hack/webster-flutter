@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -14,7 +15,7 @@ class DashBoard extends StatelessWidget {
 
   Future<Map> _fetchDashboard(String email, String token) async {
     Map ret = {};
-    final url = 'http://192.168.1.3:8000/client/user/?email=$email';
+    final url = 'http://192.168.1.2:8000/client/user/?email=$email';
     print(url);
     try {
       final response = await http.get(url);
@@ -27,15 +28,17 @@ class DashBoard extends StatelessWidget {
       if (jresponse[0]['websites_owned'].length == 0)
         throw "Currently you don't own any websites,\nCreate one by tapping the plus button below!";
       final websiteid = jresponse[0]['websites_owned'][0];
-      final dashurl = 'http://192.168.1.3:8000/client/dashboard/$websiteid/';
+      final dashurl = 'http://192.168.1.2:8000/client/dashboard/$websiteid/';
       final dashres =
           await http.post(dashurl, headers: {'Authorization': 'Token $token'});
       final dashjres = json.decode(dashres.body);
       if (dashjres.containsKey('detail')) throw dashjres['detail'];
       if (dashjres['status'] == 'failed')
         throw dashjres['message'];
-      else
+      else {
+        print(dashjres);
         return dashjres;
+      }
     } catch (e) {
       throw e.toString();
     }
@@ -95,7 +98,9 @@ class DashBoard extends StatelessWidget {
                               ),
                             ),
                             Sparkline(
-                              data: snapshot.data['ordergraph'],
+                              data: (snapshot.data['ordergraph'] as List)
+                                  ?.map((e) => e.toDouble() as double)
+                                  ?.toList(),
                               fallbackHeight: screen_height * 0.25,
                               fallbackWidth: screen_width,
                               pointsMode: PointsMode.all,
@@ -157,7 +162,7 @@ class DashBoard extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 20,
                                 )),
-                            Text(snapshot.data['ordertoday'],
+                            Text(snapshot.data['ordertoday'].toString(),
                                 style: TextStyle(
                                     fontSize: 50,
                                     color: Colors.blue,
@@ -182,7 +187,7 @@ class DashBoard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(snapshot.data['totalorders'],
+                            Text(snapshot.data['totalorders'].toString(),
                                 style: TextStyle(
                                     fontSize: 50,
                                     color: Colors.pink,

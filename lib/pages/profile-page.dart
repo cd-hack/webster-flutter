@@ -8,7 +8,7 @@ import '../providers/auth.dart';
 
 class ProfilePage extends StatelessWidget {
   Future<Map> _fetchUser(String email) async {
-    final url = 'http://192.168.1.3:8000/client/user/?email=$email';
+    final url = 'http://192.168.1.2:8000/client/user/?email=$email';
     try {
       final response = await http.get(url);
       final jresponse = json.decode(response.body) as List;
@@ -20,9 +20,9 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final email = Provider.of<Auth>(context, listen: false).email;
+    final prov = Provider.of<Auth>(context, listen: false);
     return FutureBuilder(
-        future: _fetchUser(email),
+        future: _fetchUser(prov.email),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
@@ -119,6 +119,9 @@ class ProfilePage extends StatelessWidget {
                       "Logout",
                       style: TextStyle(color: Colors.red),
                     ),
+                    onTap: () => prov.logout().then((value) =>
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/', (Route<dynamic> route) => false)),
                   )
                 ],
               ),

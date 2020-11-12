@@ -40,6 +40,8 @@ dependencies:
   shared_preferences: ^0.5.12+4
   email_validator: '^1.0.5'
   dio: ^3.0.10
+  flutter_speed_dial: ^1.2.5
+  lazy_load_scrollview: ^1.1.0
 
 dev_dependencies:
   flutter_test:

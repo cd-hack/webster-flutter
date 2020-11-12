@@ -28,7 +28,7 @@ class _AddMoreDetailsPageState extends State<AddMoreDetailsPage> {
   }
 
   Future<Map> _uploadImage(Map userdetails, String token) async {
-    final url = 'http://192.168.1.3:8000/client/website/';
+    final url = 'http://192.168.1.2:8000/client/website/';
     try {
       Dio dio = new Dio();
       String date = DateTime.now().toString();
