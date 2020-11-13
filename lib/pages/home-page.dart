@@ -5,8 +5,11 @@ import 'package:webster/pages/profile-page.dart';
 import 'package:webster/pages/select-category-page.dart';
 import 'productlist-page.dart';
 
+final GlobalKey<ScaffoldState> homeKey = new GlobalKey<ScaffoldState>();
+
 class Home extends StatefulWidget {
   static const routeName = '/homePage';
+
   @override
   State<StatefulWidget> createState() {
     return HomeState();
@@ -41,7 +44,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return Scaffold(key: homeKey,
       appBar: AppBar(
         elevation: 3,
         title: Text(_title[selectedIndex]),

@@ -29,9 +29,7 @@ class _EditableFormState extends State<EditableForm> {
       aboutController,
       instagramIdController,
       facebookIdController,
-      cat3Controller,
-      cat2Controller,
-      cat1Controller;
+      websiteid;
 
   @override
   void didChangeDependencies() {
@@ -41,9 +39,7 @@ class _EditableFormState extends State<EditableForm> {
       aboutController = TextEditingController(text: args['about']);
       instagramIdController = TextEditingController(text: args['ighandle']);
       facebookIdController = TextEditingController(text: args['fburl']);
-      cat3Controller = TextEditingController(text: args['title']);
-      cat2Controller = TextEditingController(text: args['title']);
-      cat1Controller = TextEditingController(text: args['title']);
+      websiteid = TextEditingController(text: 'hi');
     }
     super.didChangeDependencies();
   }
@@ -54,9 +50,8 @@ class _EditableFormState extends State<EditableForm> {
     aboutController.dispose();
     instagramIdController.dispose();
     facebookIdController.dispose();
-    cat1Controller.dispose();
-    cat2Controller.dispose();
-    cat3Controller.dispose();
+    websiteid.dispose();
+
     super.dispose();
   }
 
@@ -71,8 +66,11 @@ class _EditableFormState extends State<EditableForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(args['title']),
+      ),
       body: Container(
+        margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         child: Form(
             key: this._formKey,
             child: ListView(
@@ -89,13 +87,16 @@ class _EditableFormState extends State<EditableForm> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Title",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),
@@ -110,13 +111,17 @@ class _EditableFormState extends State<EditableForm> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "About",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),
@@ -130,13 +135,16 @@ class _EditableFormState extends State<EditableForm> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Instagram id",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),
@@ -150,13 +158,16 @@ class _EditableFormState extends State<EditableForm> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "FaceBook id",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),
@@ -165,58 +176,22 @@ class _EditableFormState extends State<EditableForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    controller: cat1Controller,
+                    controller: websiteid,
                     validator: isEmptyValidator,
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
-                      labelText: "Category 1",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      labelText: "Website ID",
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                           borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(width: 2)),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: cat2Controller,
-                    validator: isEmptyValidator,
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.grey),
-                      labelText: "Category 2",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
-                      errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: cat3Controller,
-                    validator: isEmptyValidator,
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.grey),
-                      labelText: "Category 3",
-                      focusedErrorBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
-                      errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.red)),
-                      focusedBorder:
-                          OutlineInputBorder(borderSide: BorderSide(width: 2)),
-                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(width: 1.0),
                       ),
                     ),

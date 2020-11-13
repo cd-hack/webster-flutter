@@ -10,7 +10,7 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return Container(
+    return Container(margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: Colors.black87,
           borderRadius: BorderRadius.circular(30),
@@ -20,12 +20,12 @@ class ProductTile extends StatelessWidget {
               blurRadius: 10.0,
             ),
           ]),
-      height: 0.33 * height,
+      height: 0.35 * height,
       width: 0.45 * width,
       child: Column(
         children: <Widget>[
           ClipRRect(
-            child: Image.network(imageUrl),
+            child: Image.network(imageUrl,height: 0.45*width,width:0.45*width,fit: BoxFit.cover,),
             borderRadius: BorderRadius.vertical(top: Radius.circular(30) )
           ),
           Padding(

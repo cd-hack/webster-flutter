@@ -10,6 +10,7 @@ import './pages/add-category-page.dart';
 import './pages/login-page.dart';
 import './pages/registration-page.dart';
 import './providers/auth.dart';
+import './pages/newproduct-page.dart';
 
 import './pages/home-page.dart';
 
@@ -68,7 +69,8 @@ class MyApp extends StatelessWidget {
             DashBoard.routeName: (context) => DashBoard(),
             AddCategoryPage.routeName: (context) => AddCategoryPage(),
             LoginPage.routeName: (context) => LoginPage(),
-            RegistrationPage.routeName: (context) => RegistrationPage()
+            RegistrationPage.routeName: (context) => RegistrationPage(),
+            AddProduct.routeName:(context)=>AddProduct()
           },
         ),
       ),

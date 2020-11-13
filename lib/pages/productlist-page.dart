@@ -5,9 +5,12 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:convert';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:google_fonts/google_fonts.dart';
+import './newproduct-page.dart';
 
+import './home-page.dart';
 import '../widgets/product-tile.dart';
 import '../providers/auth.dart';
+import '../widgets/alert-box.dart';
 
 class ProductList extends StatefulWidget {
   @override
@@ -19,21 +22,38 @@ class _ProductListState extends State<ProductList> {
   bool _isloading = true, _get = false;
   List<Map> posts = [];
 
-  String next = "http://192.168.1.2:8000/client/productlist/", email;
+  String next = "http://192.168.1.2:8000/client/productlist/", email, token;
 
   Future _fetchProducts() async {
-    if (next == 'null') return;
+    print(next);
+    if (next == null) return;
     setState(() => _isloading = true);
     try {
+      next += '?wid=$wid';
       final response = await http.get(next);
       final jresponse = json.decode(response.body);
       if (response.statusCode == 200) {
         setState(() {
-          posts.add(jresponse['results']);
+          jresponse['results'].forEach((e) => posts.add(e));
           _isloading = false;
         });
         next = jresponse['next'];
       }
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<bool> _fetchProductsFromInstagram(String token) async {
+    if (wid == null) return false;
+    final url = 'http://192.168.1.2:8000/client/fetchproducts/$wid/';
+    try {
+      final response =
+          await http.post(url, headers: {'Authorization': 'Token $token'});
+      final jresponse = json.decode(response.body);
+      if (!jresponse.containsKey('status') || jresponse['status'] == 'failed')
+        throw "Couldn\'t fetch the products, Please try later";
+      if (jresponse['status'] == 'success') return true;
     } catch (e) {
       throw e.toString();
     }
@@ -48,10 +68,14 @@ class _ProductListState extends State<ProductList> {
   void didChangeDependencies() async {
     if (!_get) {
       email = Provider.of<Auth>(context, listen: false).email;
-      final url = 'http://192.168.1.3:8000/client/user/?email=$email';
-      final res = await http.get(url);
+      token = Provider.of<Auth>(context, listen: false).token;
+      final url = 'http://192.168.1.2:8000/client/user/?email=$email';
+      final res = await http.get(
+        url,
+      );
       final jres = json.decode(res.body);
-      if (jres[0]['websites_owned'].len != 0)
+      print(jres);
+      if (jres[0]['websites_owned'].length != 0)
         wid = jres[0]['websites_owned'][0];
       if (wid != null)
         await _fetchProducts();
@@ -60,6 +84,7 @@ class _ProductListState extends State<ProductList> {
           _isloading = false;
         });
       }
+      _get = true;
     }
     super.didChangeDependencies();
   }
@@ -67,31 +92,28 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(15),
       child: Stack(
         children: <Widget>[
-          _isloading
-              ? CircularProgressIndicator()
-              : wid == null || posts.length == 0
-                  ? Center(
-                      child: Text(
-                        'You Currently don\'t have any Products / Websites, Tap refresh to Fetch/ Update the Products',
-                        style: GoogleFonts.openSans(
-                            color: Colors.grey[700], fontSize: 23),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  : LazyLoadScrollView(
-                      child: GridView.builder(
-                        itemCount: posts.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (context, index) => ProductTile(
-                            posts[index]['image'], posts[index]['name'], '4.7'),
-                      ),
-                      onEndOfPage: _fetchProducts,
-                    ),
+          wid == null || posts.length == 0
+              ? Center(
+                  child: Text(
+                    'You Currently don\'t have any Products / Websites, Tap refresh to Fetch/ Update the Products',
+                    style: GoogleFonts.openSans(
+                        color: Colors.grey[700], fontSize: 23),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : LazyLoadScrollView(
+                  isLoading: _isloading,
+                  child: GridView.builder(
+                    itemCount: posts.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, childAspectRatio: 0.8),
+                    itemBuilder: (context, index) => ProductTile(
+                        posts[index]['image'], posts[index]['name'], '4.7'),
+                  ),
+                  onEndOfPage: _fetchProducts,
+                ),
           Positioned(
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -103,6 +125,7 @@ class _ProductListState extends State<ProductList> {
                 heroTag: 'speed-dial-hero-tag',
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.black,
+                overlayOpacity: 0,
                 elevation: 8.0,
                 shape: CircleBorder(),
                 children: [
@@ -110,12 +133,28 @@ class _ProductListState extends State<ProductList> {
                       child: Icon(Icons.add),
                       backgroundColor: Colors.red,
                       label: 'Add new Product',
-                      onTap: () {}),
+                      onTap: () => AddProduct()),
                   SpeedDialChild(
                       child: Icon(Icons.refresh),
                       backgroundColor: Colors.blue,
                       label: 'Fetch/Update Products',
-                      onTap: null),
+                      onTap: () =>
+                          _fetchProductsFromInstagram(token).then((value) {
+                            if (value)
+                              homeKey.currentState.showSnackBar(SnackBar(
+                                  content:
+                                      Text('Products fetched and stored')));
+                            else
+                              showDialog(
+                                context: context,
+                                builder: (context) => Alertbox(
+                                    'Couldn\'t Fetch the products, Try Again!'),
+                              );
+                          }).catchError((e) => showDialog(
+                                context: context,
+                                builder: (context) => Alertbox(
+                                    'Couldn\'t Fetch the products, Try Again!'),
+                              ))),
                 ],
               ),
             ),
