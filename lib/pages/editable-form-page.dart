@@ -1,9 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
-import 'add-more-datials-form-page.dart';
+import './home-page.dart';
+import '../widgets/alert-box.dart';
+import '../providers/auth.dart';
 
 class EditableForm extends StatefulWidget {
   static const routeName = '/edit-page';
@@ -14,13 +18,18 @@ class EditableForm extends StatefulWidget {
 class _EditableFormState extends State<EditableForm> {
   File carousel_image;
   Map args;
-  bool _hasloaded = false;
+  bool _hasloaded = false, _isloading = false, _isValid = false;
   Future getImage() async {
     final uploaded_image =
         await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
       carousel_image = File(uploaded_image.path);
     });
+  }
+
+  Future<void> _editWebsite(Map args, String token) async {
+    final url = 'http://192.168.1.5:8000/client/website/${args['id']}/';
+    
   }
 
   var currentDropDownValue = 0;
@@ -39,7 +48,7 @@ class _EditableFormState extends State<EditableForm> {
       aboutController = TextEditingController(text: args['about']);
       instagramIdController = TextEditingController(text: args['ighandle']);
       facebookIdController = TextEditingController(text: args['fburl']);
-      websiteid = TextEditingController(text: 'hi');
+      websiteid = TextEditingController(text: args['websiteid']);
     }
     super.didChangeDependencies();
   }
@@ -55,16 +64,9 @@ class _EditableFormState extends State<EditableForm> {
     super.dispose();
   }
 
-  String isEmptyValidator(String value) {
-    if (value.isEmpty) {
-      return "This field cannot be empty";
-      return null;
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final token = Provider.of(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(args['title']),
@@ -72,7 +74,7 @@ class _EditableFormState extends State<EditableForm> {
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         child: Form(
-            key: this._formKey,
+            key: _formKey,
             child: ListView(
               children: [
                 Padding(
@@ -83,7 +85,12 @@ class _EditableFormState extends State<EditableForm> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: titleController,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.isEmpty) return "Title cannot be empty";
+                      if (value.length > 30)
+                        return "Length of the title is too big";
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Title",
@@ -106,7 +113,10 @@ class _EditableFormState extends State<EditableForm> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: aboutController,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.length < 60) return "Minimum characters 60";
+                      return null;
+                    },
                     maxLines: 2,
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
@@ -131,7 +141,11 @@ class _EditableFormState extends State<EditableForm> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: instagramIdController,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.length >= 30 || value.isEmpty)
+                        return "Invalid Instagram handle";
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Instagram id",
@@ -154,7 +168,10 @@ class _EditableFormState extends State<EditableForm> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: facebookIdController,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.isEmpty) return "Value can't be empty";
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "FaceBook id",
@@ -177,7 +194,10 @@ class _EditableFormState extends State<EditableForm> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: websiteid,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.length > 30) return "Invalid Website ID";
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Website ID",
@@ -227,12 +247,38 @@ class _EditableFormState extends State<EditableForm> {
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(8.0),
-        child: RaisedButton(
-          onPressed: () {},
-          color: Colors.black,
-          textColor: Colors.white,
-          child: Text("UPDATE DETAILS"),
-        ),
+        child: _isloading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : RaisedButton(
+                onPressed: () {
+                  _isValid = _formKey.currentState.validate();
+                  if (_isValid) {
+                    setState(() => _isloading = true);
+                    args['title'] = titleController.text;
+                    args['about'] = aboutController.text;
+                    args['ighandle'] = instagramIdController.text;
+                    args['fburl'] = facebookIdController.text;
+                    args['websiteid'] = websiteid.text;
+                    _editWebsite(args, token).then((value) {
+                      setState(() => _isloading = false);
+                      Navigator.pop(context);
+                      homeKey.currentState.showSnackBar(SnackBar(
+                          content: Text('Website updated successfully!')));
+                    }).catchError((e) {
+                      setState(() => _isloading = false);
+                      showDialog(
+                        context: context,
+                        builder: (context) => Alertbox(e.toString()),
+                      );
+                    });
+                  }
+                },
+                color: Colors.black,
+                textColor: Colors.white,
+                child: Text("UPDATE DETAILS"),
+              ),
       ),
     );
   }

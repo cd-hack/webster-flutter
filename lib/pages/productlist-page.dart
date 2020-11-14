@@ -110,7 +110,7 @@ class _ProductListState extends State<ProductList> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, childAspectRatio: 0.8),
                     itemBuilder: (context, index) => ProductTile(
-                        posts[index]['image'], posts[index]['name'], '4.7'),
+                        posts[index]['image320'], posts[index]['name'], '4.7'),
                   ),
                   onEndOfPage: _fetchProducts,
                 ),
