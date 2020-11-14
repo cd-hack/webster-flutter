@@ -11,6 +11,9 @@ import './pages/login-page.dart';
 import './pages/registration-page.dart';
 import './providers/auth.dart';
 import './pages/newproduct-page.dart';
+import './pages/change-accountdetailsPage.dart';
+import './pages/change-phonepage.dart';
+import './pages/changeEmailPage.dart';
 
 import './pages/home-page.dart';
 
@@ -70,7 +73,10 @@ class MyApp extends StatelessWidget {
             AddCategoryPage.routeName: (context) => AddCategoryPage(),
             LoginPage.routeName: (context) => LoginPage(),
             RegistrationPage.routeName: (context) => RegistrationPage(),
-            AddProduct.routeName:(context)=>AddProduct()
+            AddProduct.routeName: (context) => AddProduct(),
+            ChangeEmail.routeName: (context) => ChangeEmail(),
+            ChangePhone.routeName: (context) => ChangePhone(),
+            ChangeAccountDetails.routeName: (context) => ChangeAccountDetails()
           },
         ),
       ),

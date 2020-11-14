@@ -51,8 +51,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    bool isloading = false;
-
     return Scaffold(
         backgroundColor: Color.fromRGBO(33, 37, 40, 1),
         body: Container(
@@ -82,6 +80,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             child: ListView(
                               children: <Widget>[
                                 TextFormField(
+                                    keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
                                         filled: true,
                                         hintText: 'Enter your E-mail address',
@@ -106,6 +105,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   height: 15,
                                 ),
                                 TextFormField(
+                                  keyboardType: TextInputType.phone,
                                   decoration: InputDecoration(
                                       filled: true,
                                       hintText: 'Enter your Phone Number',
@@ -151,6 +151,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   height: 15,
                                 ),
                                 TextFormField(
+                                  keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
                                       filled: true,
                                       hintText: 'Enter your Account Number',
@@ -198,9 +199,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   height: 15,
                                 ),
                                 TextFormField(
+                                  obscureText: true,
                                   decoration: InputDecoration(
                                       filled: true,
-                                      hintText: 'Enter your Password Code',
+                                      hintText: 'Enter your Password',
                                       prefixIcon: Icon(Icons.lock),
                                       fillColor: Colors.grey[300],
                                       border: OutlineInputBorder(
@@ -221,6 +223,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   height: 15,
                                 ),
                                 TextFormField(
+                                  obscureText: true,
                                   decoration: InputDecoration(
                                       filled: true,
                                       hintText: 'Confirm your Password',

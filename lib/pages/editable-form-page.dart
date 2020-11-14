@@ -57,7 +57,7 @@ class _EditableFormState extends State<EditableForm> {
 
   String isEmptyValidator(String value) {
     if (value.isEmpty) {
-      //return "This field cannot be empty";
+      return "This field cannot be empty";
       return null;
     }
     return null;

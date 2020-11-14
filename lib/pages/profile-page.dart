@@ -5,10 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 
 import '../providers/auth.dart';
+import './change-accountdetailsPage.dart';
+import './change-phonepage.dart';
+import './changeEmailPage.dart';
 
 class ProfilePage extends StatelessWidget {
   Future<Map> _fetchUser(String email) async {
-    final url = 'http://192.168.1.2:8000/client/user/?email=$email';
+    final url = 'http://192.168.1.5:8000/client/user/?email=$email';
     try {
       final response = await http.get(url);
       final jresponse = json.decode(response.body) as List;
@@ -80,26 +83,33 @@ class ProfilePage extends StatelessWidget {
                         Icon(Icons.arrow_forward_ios),
                       ],
                     ),
+                    onTap: () => Navigator.of(context).pushNamed(
+                        ChangeEmail.routeName,
+                        arguments: snapshot.data['id']),
                   ),
                   ListTile(
-                    leading: Icon(Icons.phone_android),
-                    title: Text("Change Phone number"),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text(
-                          snapshot.data['phone'],
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Icon(Icons.arrow_forward_ios),
-                      ],
-                    ),
-                  ),
+                      leading: Icon(Icons.phone_android),
+                      title: Text("Change Phone number"),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            snapshot.data['phone'],
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Icon(Icons.arrow_forward_ios),
+                        ],
+                      ),
+                      onTap: () => Navigator.of(context).pushNamed(
+                          ChangePhone.routeName,
+                          arguments: snapshot.data['id'])),
                   ListTile(
-                    leading: Icon(Icons.payment),
-                    title: Text("Change Payment Details"),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                  ),
+                      leading: Icon(Icons.payment),
+                      title: Text("Change Payment Details"),
+                      trailing: Icon(Icons.arrow_forward_ios),
+                      onTap: () => Navigator.of(context).pushNamed(
+                          ChangeAccountDetails.routeName,
+                          arguments: snapshot.data['id'])),
                   ListTile(
                     leading: Icon(Icons.desktop_mac),
                     title: Text("View Desktop Site"),

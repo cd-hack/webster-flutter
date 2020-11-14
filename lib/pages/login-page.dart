@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      TextField(
+                      TextField(keyboardType: TextInputType.emailAddress,
                         controller: pno,
                         decoration: InputDecoration(
                             filled: true,
