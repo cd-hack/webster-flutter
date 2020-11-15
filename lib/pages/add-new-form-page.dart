@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:webster/pages/add-more-datials-form-page.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
+import 'dart:io';
+import 'package:provider/provider.dart';
+import 'dart:convert';
+
+import 'package:webster/widgets/alert-box.dart';
+import '../providers/auth.dart';
+import './add-category-page.dart';
 
 class FormPage extends StatefulWidget {
   static const routeName = '/formPage';
@@ -11,7 +19,8 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
-  var currentDropDownValue = 0;
+  File carousel_image;
+  bool _isloading = false;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final websiteid = TextEditingController();
   final titleController = TextEditingController();
@@ -29,6 +38,39 @@ class _FormPageState extends State<FormPage> {
     super.dispose();
   }
 
+  Future getImage() async {
+    final uploaded_image =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      carousel_image = File(uploaded_image.path);
+    });
+  }
+
+  Future<Map> _uploadImage(Map userdetails, String token) async {
+    final url = 'http://192.168.1.5:8000/client/website/';
+    try {
+      Dio dio = new Dio();
+      String date = DateTime.now().toString();
+      userdetails['image'] = await MultipartFile.fromFile(carousel_image.path,
+          filename: "$date.jpg");
+      FormData formdata = FormData.fromMap(userdetails);
+      final response = await dio
+          .post(url,
+              data: formdata,
+              options: Options(
+                  method: 'POST',
+                  responseType: ResponseType.json,
+                  headers: {"Authorization": "Token $token"}))
+          .catchError((e) {
+        throw e.toString();
+      });
+      print(response.data);
+      return response.data;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
   String isEmptyValidator(String value) {
     if (value.isEmpty) {
       //return "This field cannot be empty";
@@ -42,6 +84,7 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    final token = Provider.of<Auth>(context, listen: false).token;
     print(widget.websiteType);
     return Scaffold(
       appBar: AppBar(
@@ -180,10 +223,37 @@ class _FormPageState extends State<FormPage> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 70, vertical: 5),
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Colors.white,
+                          onPressed: getImage,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/upload-icon.png",
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                              Text("Upload Carousel Image")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     width: double.infinity,
-                    height: 0.2 * height,
+                    height: 0.3 * height,
                     decoration: BoxDecoration(
-                        color: Colors.grey[350],
+                        image: DecorationImage(
+                            image: carousel_image != null
+                                ? FileImage(carousel_image)
+                                : AssetImage('assets/images/grey.png'),
+                            fit: BoxFit.cover),
                         borderRadius: BorderRadius.circular(20)),
                   ),
                 )
@@ -199,7 +269,13 @@ class _FormPageState extends State<FormPage> {
           ),
           color: Theme.of(context).accentColor,
           onPressed: () {
-            if (_formKey.currentState.validate())
+            if (_formKey.currentState.validate() &&
+                !_isloading) if (carousel_image == null)
+              showDialog(
+                  context: context,
+                  builder: (ctx) => Alertbox('Carousel Image not selected'));
+            else {
+              setState(() => _isloading = true);
               _detail = {
                 "title": titleController.text,
                 "about": aboutController.text,
@@ -209,14 +285,25 @@ class _FormPageState extends State<FormPage> {
                 "lnurl": "",
                 "templateType": widget.websiteType
               };
-            Navigator.of(context).pushReplacementNamed(
-                AddMoreDetailsPage.routeName,
-                arguments: _detail);
+              _uploadImage(_detail, token).then((value) {
+                setState(() => _isloading = false);
+                Navigator.of(context)
+                    .pushReplacementNamed(AddCategoryPage.routeName,arguments: value['id']);
+              }).catchError((e) {
+                setState(() => _isloading = false);
+                showDialog(
+                  context: context,
+                  builder: (context) => Alertbox(e.toString()),
+                );
+              });
+            }
           },
-          child: Text(
-            "NEXT",
-            style: TextStyle(color: Colors.white),
-          ),
+          child: _isloading
+              ? CircularProgressIndicator()
+              : Text(
+                  "NEXT",
+                  style: TextStyle(color: Colors.white),
+                ),
         ),
       ),
     );

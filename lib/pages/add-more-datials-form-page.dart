@@ -67,26 +67,7 @@ class _AddMoreDetailsPageState extends State<AddMoreDetailsPage> {
                     ? Image.asset('assets/images/no-image.png')
                     : Image.file(carousel_image),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 70, vertical: 5),
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  color: Colors.white,
-                  onPressed: getImage,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/upload-icon.png",
-                        height: MediaQuery.of(context).size.height * 0.05,
-                      ),
-                      Text("Upload Carousel Image")
-                    ],
-                  ),
-                ),
-              ),
+              
             ],
           ),
         ),
@@ -98,10 +79,10 @@ class _AddMoreDetailsPageState extends State<AddMoreDetailsPage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             color: Colors.black,
             onPressed: () {
-              // showDialog(
-              //     barrierDismissible: false,
-              //     context: context,
-              //     builder: (context) => LoadingDialogue());
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => LoadingDialogue());
               if (!_isloading) {
                 setState(() {
                   _isloading = true;

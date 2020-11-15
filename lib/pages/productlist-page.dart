@@ -53,7 +53,7 @@ class _ProductListState extends State<ProductList> {
       final jresponse = json.decode(response.body);
       if (!jresponse.containsKey('status') || jresponse['status'] == 'failed')
         throw "Couldn\'t fetch the products, Please try later";
-      if (jresponse['status'] == 'success') return true;
+      return true;
     } catch (e) {
       throw e.toString();
     }
@@ -138,29 +138,46 @@ class _ProductListState extends State<ProductList> {
                       child: Icon(Icons.refresh),
                       backgroundColor: Colors.blue,
                       label: 'Fetch/Update Products',
-                      onTap: () =>
-                          _fetchProductsFromInstagram(token).then((value) {
-                            if (value)
-                              homeKey.currentState.showSnackBar(SnackBar(
-                                  content:
-                                      Text('Products fetched and stored')));
-                            else
-                              showDialog(
-                                context: context,
-                                builder: (context) => Alertbox(
-                                    'Couldn\'t Fetch the products, Try Again!'),
-                              );
-                          }).catchError((e) => showDialog(
-                                context: context,
-                                builder: (context) => Alertbox(
-                                    'Couldn\'t Fetch the products, Try Again!'),
-                              ))),
+                      onTap: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) => LoadingDialogue());
+                        _fetchProductsFromInstagram(token).then((value) {
+                          Navigator.pop(context);
+                          if (value)
+                            homeKey.currentState.showSnackBar(SnackBar(
+                                content: Text('Products fetched and stored')));
+                          else
+                            showDialog(
+                              context: context,
+                              builder: (context) => Alertbox(
+                                  'Couldn\'t Fetch the products, Try Again!'),
+                            );
+                        }).catchError((e) {
+                          Navigator.pop(context);
+                          showDialog(
+                            context: context,
+                            builder: (context) => Alertbox(
+                                'Couldn\'t Fetch the products, Try Again!'),
+                          );
+                        });
+                      }),
                 ],
               ),
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+class LoadingDialogue extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Image.asset("assets/images/fetching.gif"),
     );
   }
 }

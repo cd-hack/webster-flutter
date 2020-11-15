@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:webster/pages/add-more-datials-form-page.dart';
 import 'package:webster/pages/add-new-form-page.dart';
 import 'package:webster/pages/editable-form-page.dart';
 import 'package:webster/pages/select-category-page.dart';
@@ -67,7 +66,6 @@ class MyApp extends StatelessWidget {
             Home.routeName: (context) => Home(),
             FormPage.routeName: (context) => FormPage(),
             SelectCategory.routeName: (context) => SelectCategory(),
-            AddMoreDetailsPage.routeName: (context) => AddMoreDetailsPage(),
             EditableForm.routeName: (context) => EditableForm(),
             DashBoard.routeName: (context) => DashBoard(),
             AddCategoryPage.routeName: (context) => AddCategoryPage(),
