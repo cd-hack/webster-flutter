@@ -25,7 +25,7 @@ class SelectCategory extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => FormPage(
-                        websiteType: 0,
+                        websiteType: 1,
                       )),
             ),
             child: PictureTile(
@@ -38,7 +38,7 @@ class SelectCategory extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => FormPage(
-                        websiteType: 1,
+                        websiteType: 2,
                       )),
             ),
             child: PictureTile(

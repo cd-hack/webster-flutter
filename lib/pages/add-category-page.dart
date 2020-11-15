@@ -29,18 +29,19 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   bool _isloading = false, _isValid = false;
 
   String isEmptyValidator(String value) {
-    if (value.isEmpty) {
-      //return "This field cannot be empty";
-      return null;
-    }
+    if (value.isEmpty) return "This field cannot be empty";
     return null;
   }
 
-  Future<bool> _addCategory(List<String> cat, String token, String wid) async {
+  Future<bool> _addCategory(List<String> cat, String token, int wid) async {
     try {
       final url = 'http://192.168.1.5:8000/client/category/$wid/';
       final response = await http.post(url,
-          body: {"category": cat}, headers: {"Authorization": "Token $token"});
+          body: json.encode({"category": cat}),
+          headers: {
+            "Authorization": "Token $token",
+            'Content-Type': 'application/json'
+          });
       final jresponse = json.decode(response.body) as Map;
       if (jresponse.containsKey('status') && jresponse['status'] == 'failed')
         throw jresponse['message'];
@@ -66,17 +67,17 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     }
   }
 
-  final _form = GlobalKey<FormState>();
+  final _formcatpage = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final _token = Provider.of<Auth>(context,listen: false).token;
-    final _wid = ModalRoute.of(context).settings.arguments as String;
+    final _token = Provider.of<Auth>(context, listen: false).token;
+    final _wid = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(title: Text('Add Category')),
       body: Container(
         margin: EdgeInsets.all(15),
         child: Form(
-            key: _form,
+            key: _formcatpage,
             child: SingleChildScrollView(
                 child: Column(
               children: <Widget>[
@@ -143,63 +144,42 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               ],
             ))),
       ),
-      floatingActionButton: Row(
-        children: <Widget>[
-          FloatingActionButton(
-            child: Icon(_isloading ? CircularProgressIndicator() : Icons.save),
-            onPressed: () {
-              _isValid = _form.currentState.validate();
-              if (_isValid && !_isloading) {
-                setState(() {
-                  _isloading = true;
-                });
-                _addCategory([
-                  cat1Controller.text,
-                  cat2Controller.text,
-                  cat3Controller.text
-                ], _token, _wid)
-                    .then((value) {
-                  if (value)
-                    Navigator.of(context).pushReplacementNamed(Home.routeName);
-                  setState(() {
-                    _isloading = false;
-                  });
-                }).catchError((e) {
-                  setState(() {
-                    _isloading = false;
-                  });
-                  showDialog(
-                    context: context,
-                    builder: (context) => Alertbox(e.toString()),
-                  );
-                });
-              }
-            },
-          ),
-          FloatingActionButton(
-              child: Icon(Icons.refresh),
-              onPressed: () {
-                if (!_isloading) {
-                  setState(() {
-                    _isloading = true;
-                  });
-                  _fetchProducts(_token, _wid).then((value) {
-                    if (value) Navigator.of(context).pushNamed(Home.routeName);
-                    setState(() {
-                      _isloading = false;
-                    });
-                  }).catchError((e) {
-                    setState(() {
-                      _isloading = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (context) => Alertbox(e.toString()),
-                    );
-                  });
-                }
-              })
-        ],
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'konakey',
+        child: _isloading
+            ? CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              )
+            : Icon(Icons.save),
+        onPressed: () {
+          _isValid = _formcatpage.currentState.validate();
+          if (_isValid && !_isloading) {
+            setState(() {
+              _isloading = true;
+            });
+            _addCategory([
+              cat1Controller.text,
+              cat2Controller.text,
+              cat3Controller.text
+            ], _token, _wid)
+                .then((value) {
+              if (value)
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
+              setState(() {
+                _isloading = false;
+              });
+            }).catchError((e) {
+              setState(() {
+                _isloading = false;
+              });
+              showDialog(
+                context: context,
+                builder: (context) => Alertbox(e.toString()),
+              );
+            });
+          }
+        },
       ),
     );
   }

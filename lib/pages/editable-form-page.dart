@@ -18,7 +18,7 @@ class EditableForm extends StatefulWidget {
 
 class _EditableFormState extends State<EditableForm> {
   File carousel_image;
-  Map args;
+  Map<String, dynamic> args;
   bool _hasloaded = false, _isloading = false, _isValid = false;
   Future getImage() async {
     final uploaded_image =
@@ -28,7 +28,7 @@ class _EditableFormState extends State<EditableForm> {
     });
   }
 
-  Future<void> _editWebsite(Map args, String token) async {
+  Future<void> _editWebsite(Map<String, dynamic> args, String token) async {
     final url = 'http://192.168.1.5:8000/client/website/${args['id']}/';
     print(args);
     try {
@@ -54,17 +54,24 @@ class _EditableFormState extends State<EditableForm> {
             jresponse['status'][0] == 'failed') throw jresponse['message'][0];
       } else {
         Dio dio = new Dio();
-        String date = DateTime.now().toString();
-        args['image'] = await MultipartFile.fromFile(carousel_image.path,
-            filename: "$date.jpg");
-        FormData formdata = FormData.fromMap(args);
+        FormData formdata = FormData.fromMap({
+          "title": args['title'],
+          "about": args['about'],
+          "templatetype": args['templatetype'],
+          "ighandle": args['ighandle'],
+          "fburl": args['fburl'],
+          "lnurl": args['lnurl'],
+          "websiteid": args['websiteid'],
+          "image": await MultipartFile.fromFile(carousel_image.path)
+        });
+        print('loco');
         response = await dio.patch(url,
             data: formdata,
             options: Options(
                 method: 'PATCH',
                 responseType: ResponseType.json,
                 headers: {"Authorization": "Token $token"}));
-        jresponse = json.decode(response.data);
+        jresponse = response.data;
         if (jresponse.containsKey('status') &&
             jresponse['status'][0] == 'failed') throw jresponse['message'][0];
       }
@@ -212,6 +219,7 @@ class _EditableFormState extends State<EditableForm> {
                     controller: facebookIdController,
                     validator: (value) {
                       if (value.isEmpty) return "Value can't be empty";
+                      if (!Uri.parse(value).isAbsolute) return "Invalid URL";
                       return null;
                     },
                     decoration: InputDecoration(
@@ -296,46 +304,43 @@ class _EditableFormState extends State<EditableForm> {
                         borderRadius: BorderRadius.circular(20)),
                   ),
                 ),
-                Container(
-                  child: carousel_image == null
-                      ? Image.asset('assets/images/no-image.png')
-                      : Image.file(carousel_image),
-                ),
               ],
             )),
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(8.0),
-        child: _isloading
-            ? CircularProgressIndicator()
-            : RaisedButton(
-                onPressed: () {
-                  _isValid = _formKey.currentState.validate();
-                  if (_isValid) {
-                    setState(() => _isloading = true);
-                    args['title'] = titleController.text;
-                    args['about'] = aboutController.text;
-                    args['ighandle'] = instagramIdController.text;
-                    args['fburl'] = facebookIdController.text;
-                    args['websiteid'] = websiteid.text;
-                    _editWebsite(args, token).then((value) {
-                      setState(() => _isloading = false);
-                      Navigator.pop(context);
-                      homeKey.currentState.showSnackBar(SnackBar(
-                          content: Text('Website updated successfully!')));
-                    }).catchError((e) {
-                      setState(() => _isloading = false);
-                      showDialog(
-                        context: context,
-                        builder: (context) => Alertbox(e.toString()),
-                      );
-                    });
-                  }
-                },
-                color: Colors.black,
-                textColor: Colors.white,
-                child: Text("UPDATE DETAILS"),
-              ),
+        child: RaisedButton(
+          onPressed: () {
+            _isValid = _formKey.currentState.validate();
+            if (_isValid) {
+              setState(() => _isloading = true);
+              args['title'] = titleController.text;
+              args['about'] = aboutController.text;
+              args['ighandle'] = instagramIdController.text;
+              args['fburl'] = facebookIdController.text;
+              args['websiteid'] = websiteid.text;
+              _editWebsite(args, token).then((value) {
+                setState(() => _isloading = false);
+                Navigator.pop(context);
+                homeKey.currentState.showSnackBar(
+                    SnackBar(content: Text('Website updated successfully!')));
+              }).catchError((e) {
+                setState(() => _isloading = false);
+                showDialog(
+                  context: context,
+                  builder: (context) => Alertbox(e.toString()),
+                );
+              });
+            }
+          },
+          color: Colors.black,
+          textColor: Colors.white,
+          child: _isloading
+              ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                )
+              : Text("UPDATE DETAILS"),
+        ),
       ),
     );
   }

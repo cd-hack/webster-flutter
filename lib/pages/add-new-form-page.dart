@@ -48,11 +48,28 @@ class _FormPageState extends State<FormPage> {
   Future<Map> _uploadImage(Map userdetails, String token) async {
     final url = 'http://192.168.1.5:8000/client/website/';
     try {
+      print(token);
+      // print({
+      //   "title": userdetails["title"],
+      //   "about": userdetails["about"],
+      //   "templatetype": widget.websiteType,
+      //   "ighandle": userdetails["ighandle"],
+      //   "fburl": userdetails["fburl"],
+      //   "lnurl": userdetails["lnurl"],
+      //   "image": await MultipartFile.fromFile(carousel_image.path),
+      //   "websiteid": userdetails["websiteid"]
+      // });
       Dio dio = new Dio();
-      String date = DateTime.now().toString();
-      userdetails['image'] = await MultipartFile.fromFile(carousel_image.path,
-          filename: "$date.jpg");
-      FormData formdata = FormData.fromMap(userdetails);
+      FormData formdata = FormData.fromMap({
+        "title": userdetails["title"],
+        "about": userdetails["about"],
+        "templatetype": 1,
+        "ighandle": userdetails["ighandle"],
+        "fburl": 'https://github.com/',
+        "lnurl": 'https://github.com/',
+        "image": await MultipartFile.fromFile(carousel_image.path),
+        "websiteid": userdetails["websiteid"]
+      });
       final response = await dio
           .post(url,
               data: formdata,
@@ -70,7 +87,7 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
-  Map _detail;
+  Map<String, dynamic> _detail;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +141,7 @@ class _FormPageState extends State<FormPage> {
                   child: TextFormField(
                     controller: aboutController,
                     validator: (value) {
-                      if (value.length < 60) return "Minimum characters 60";
+                      if (value.length < 10) return "Minimum characters 60";
                       return null;
                     },
                     maxLines: 2,
@@ -181,6 +198,7 @@ class _FormPageState extends State<FormPage> {
                     controller: facebookIdController,
                     validator: (value) {
                       if (value.isEmpty) return "Value can't be empty";
+                      if (!Uri.parse(value).isAbsolute) return "Invalid URL";
                       return null;
                     },
                     decoration: InputDecoration(
@@ -309,7 +327,9 @@ class _FormPageState extends State<FormPage> {
             }
           },
           child: _isloading
-              ? CircularProgressIndicator()
+              ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                )
               : Text(
                   "NEXT",
                   style: TextStyle(color: Colors.white),
