@@ -3,7 +3,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
-import 'dart:convert';
 
 import 'package:webster/widgets/alert-box.dart';
 import '../providers/auth.dart';
@@ -71,14 +70,6 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
-  String isEmptyValidator(String value) {
-    if (value.isEmpty) {
-      //return "This field cannot be empty";
-      return null;
-    }
-    return null;
-  }
-
   Map _detail;
 
   @override
@@ -102,7 +93,12 @@ class _FormPageState extends State<FormPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: titleController,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.isEmpty) return "Title cannot be empty";
+                      if (value.length > 30)
+                        return "Length of the title is too big";
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Title",
@@ -127,7 +123,10 @@ class _FormPageState extends State<FormPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: aboutController,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.length < 60) return "Minimum characters 60";
+                      return null;
+                    },
                     maxLines: 2,
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
@@ -152,7 +151,11 @@ class _FormPageState extends State<FormPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: instagramIdController,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.length >= 30 || value.isEmpty)
+                        return "Invalid Instagram handle";
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Instagram id",
@@ -176,7 +179,10 @@ class _FormPageState extends State<FormPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: facebookIdController,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.isEmpty) return "Value can't be empty";
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "FaceBook id",
@@ -200,7 +206,10 @@ class _FormPageState extends State<FormPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: websiteid,
-                    validator: isEmptyValidator,
+                    validator: (value) {
+                      if (value.length > 30) return "Invalid Website ID";
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.grey),
                       labelText: "Website ID",
@@ -287,8 +296,9 @@ class _FormPageState extends State<FormPage> {
               };
               _uploadImage(_detail, token).then((value) {
                 setState(() => _isloading = false);
-                Navigator.of(context)
-                    .pushReplacementNamed(AddCategoryPage.routeName,arguments: value['id']);
+                Navigator.of(context).pushReplacementNamed(
+                    AddCategoryPage.routeName,
+                    arguments: value['id']);
               }).catchError((e) {
                 setState(() => _isloading = false);
                 showDialog(

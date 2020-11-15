@@ -73,7 +73,6 @@ class _EditableFormState extends State<EditableForm> {
     }
   }
 
-  var currentDropDownValue = 0;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   TextEditingController titleController,
       aboutController,

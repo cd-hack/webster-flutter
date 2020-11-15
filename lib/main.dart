@@ -13,7 +13,7 @@ import './pages/newproduct-page.dart';
 import './pages/change-accountdetailsPage.dart';
 import './pages/change-phonepage.dart';
 import './pages/changeEmailPage.dart';
-
+import './pages/productPreviewPage.dart';
 import './pages/home-page.dart';
 
 void main() {
@@ -74,7 +74,8 @@ class MyApp extends StatelessWidget {
             AddProduct.routeName: (context) => AddProduct(),
             ChangeEmail.routeName: (context) => ChangeEmail(),
             ChangePhone.routeName: (context) => ChangePhone(),
-            ChangeAccountDetails.routeName: (context) => ChangeAccountDetails()
+            ChangeAccountDetails.routeName: (context) => ChangeAccountDetails(),
+            ProductPreviewPage.routeName: (context) => ProductPreviewPage()
           },
         ),
       ),

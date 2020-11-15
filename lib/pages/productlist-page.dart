@@ -11,6 +11,7 @@ import './home-page.dart';
 import '../widgets/product-tile.dart';
 import '../providers/auth.dart';
 import '../widgets/alert-box.dart';
+import './productPreviewPage.dart';
 
 class ProductList extends StatefulWidget {
   @override
@@ -109,8 +110,13 @@ class _ProductListState extends State<ProductList> {
                     itemCount: posts.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, childAspectRatio: 0.8),
-                    itemBuilder: (context, index) => ProductTile(
-                        posts[index]['image320'], posts[index]['name'], '4.7'),
+                    itemBuilder: (context, index) => InkWell(
+                      onTap: () => Navigator.pushNamed(
+                          context, ProductPreviewPage.routeName,
+                          arguments: posts[index]['id']),
+                      child: ProductTile(posts[index]['image320'],
+                          posts[index]['name'], posts[index]['rating']),
+                    ),
                   ),
                   onEndOfPage: _fetchProducts,
                 ),
