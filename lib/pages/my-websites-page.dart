@@ -10,7 +10,7 @@ import '../widgets/alert-box.dart';
 
 class MyWebsitesPage extends StatelessWidget {
   Future<List> _fetchWebsites(String token) async {
-    const url = 'http://192.168.1.5:8000/client/websitelist/';
+    const url = 'http://192.168.1.4:8000/client/websitelist/';
     try {
       final response =
           await http.get(url, headers: {'Authorization': 'Token $token'});

@@ -12,7 +12,7 @@ class ProductPreviewPage extends StatefulWidget {
 
 class _ProductPreviewPageState extends State<ProductPreviewPage> {
   Future<Map> _fetchProductDetail(int id) async {
-    final url = 'http://192.168.1.5:8000/client/productdetail/$id';
+    final url = 'http://192.168.1.4:8000/client/productdetail/$id';
     try {
       final response = await http.get(url);
       final jresponse = json.decode(response.body);
@@ -25,10 +25,12 @@ class _ProductPreviewPageState extends State<ProductPreviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    final pid = ModalRoute.of(context).settings.arguments;
+    final args = ModalRoute.of(context).settings.arguments as Map;
+    final pid = args['id'];
     return Scaffold(
         appBar: AppBar(
-          title: Text('Product Details'),
+          centerTitle: true,
+          title: Text(args['name']),
         ),
         body: FutureBuilder(
             future: _fetchProductDetail(pid),
@@ -48,27 +50,48 @@ class _ProductPreviewPageState extends State<ProductPreviewPage> {
                 );
               else {
                 return Container(
-                  child: Stack(
-                    children: <Widget>[
-                      Image.network(snapshot.data['image480']),
-                      Positioned(
-                        child: FloatingActionButton(
-                            elevation: 2,
-                            child: Column(
-                              children: <Widget>[
-                                Image.asset(
-                                  "assets/images/heart.png",
-                                  width: 30,
-                                  height: 30,
-                                ),
-                              ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Stack(
+                          children: <Widget>[
+                            Image.network(snapshot.data['image480']),
+                            Positioned(
+                              child: FloatingActionButton(
+                                  elevation: 2,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Image.asset(
+                                        "assets/images/heart.png",
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                      Text(
+                                        snapshot.data['wishlistno'].toString(),
+                                        style: TextStyle(color: Colors.red),
+                                      )
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.white,
+                                  onPressed: () {}),
+                              bottom: 0,
+                              right: 20,
                             ),
-                            backgroundColor: Colors.white,
-                            onPressed: () {}),
-                        bottom: 0,
-                        right: 20,
-                      ),
-                    ],
+                          ],
+                        ),
+                        Container(
+                          child: Text(snapshot.data['description']),
+                        ),
+                        Text('REVIEWS'),
+                        snapshot.data['reviews'].length == 0
+                            ? Text('No one has reviwed your product yet!')
+                            : Column(
+                                children: snapshot.data['reviews']
+                                    .map((e) => Text(e))
+                                    .toList(),
+                              )
+                      ],
+                    ),
                   ),
                 );
               }

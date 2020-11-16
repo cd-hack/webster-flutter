@@ -11,8 +11,14 @@ class Auth with ChangeNotifier {
 
   get email => _email;
 
+  Future<void> setEmail(String newmail){
+    _email=newmail;
+    _saveToken();
+    notifyListeners();
+  }
+
   Future<bool> login(String email, String password) async {
-    final url = 'http://192.168.1.5:8000/client/login/';
+    final url = 'http://192.168.1.4:8000/client/login/';
     try {
       final response =
           await http.post(url, body: {'username': email, 'password': password});
@@ -39,7 +45,7 @@ class Auth with ChangeNotifier {
       String accNo,
       String ifsc,
       String phone}) async {
-    const url = 'http://192.168.1.5:8000/client/user/';
+    const url = 'http://192.168.1.4:8000/client/user/';
     try {
       print({
         'email': email,

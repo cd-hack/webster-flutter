@@ -11,7 +11,7 @@ import './changeEmailPage.dart';
 
 class ProfilePage extends StatelessWidget {
   Future<Map> _fetchUser(String email) async {
-    final url = 'http://192.168.1.5:8000/client/user/?email=$email';
+    final url = 'http://192.168.1.4:8000/client/user/?email=$email';
     try {
       final response = await http.get(url);
       final jresponse = json.decode(response.body) as List;

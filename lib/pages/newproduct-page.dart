@@ -22,12 +22,12 @@ class _AddProductState extends State<AddProduct> {
 
   bool availability = false, veg = false, _isValid = false;
 
-  int selectedRadioTile;
+  int selectedRadioTile, i = 0;
 
   List cat;
 
   Future<Map> _getSiteInfo(int wid, String token) async {
-    final url = 'http://192.168.1.5:8000/client/website/$wid/';
+    final url = 'http://192.168.1.4:8000/client/website/$wid/';
     try {
       final response =
           await http.get(url, headers: {'Authorization': 'Token $token'});
@@ -60,7 +60,7 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     final token = Provider.of<Auth>(context, listen: false).token;
     final wid = ModalRoute.of(context).settings.arguments;
-    Map prodData;
+    Map<String, dynamic> prodData = {};
     return Scaffold(
       appBar: AppBar(
         title: Text('Create new Product'),
@@ -197,17 +197,17 @@ class _AddProductState extends State<AddProduct> {
                               .leading, //  <-- leading Checkbox
                         ),
                         Text('Select Category'),
-                        ...snapshot.data['category']
-                            .map((e) => RadioListTile(
-                                  value: 0,
+                        ...List.generate(
+                            3,
+                            (index) => RadioListTile(
+                                  value: index,
                                   groupValue: selectedRadioTile,
-                                  title: Text(e),
+                                  title: Text(cat[index]),
                                   onChanged: (val) {
                                     setState(() => selectedRadioTile = val);
                                   },
                                   activeColor: Colors.blueAccent[700],
-                                ))
-                            .toList(),
+                                )),
                         snapshot.data['templatetype'] == 1
                             ? SizedBox()
                             : Column(
@@ -236,7 +236,7 @@ class _AddProductState extends State<AddProduct> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _isValid = _newProdformkey.currentState.validate();
-          if (selectedRadioTile != null)
+          if (selectedRadioTile == null)
             showDialog(
               context: context,
               builder: (context) => Alertbox("Category must be selected"),

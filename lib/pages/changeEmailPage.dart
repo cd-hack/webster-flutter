@@ -9,7 +9,7 @@ import '../widgets/alert-box.dart';
 import '../providers/auth.dart';
 
 class ChangeEmail extends StatefulWidget {
-  static const routeName='/changeEmail';
+  static const routeName = '/changeEmail';
   @override
   _ChangeEmailState createState() => _ChangeEmailState();
 }
@@ -20,7 +20,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   bool _isloading = false, _isValid = false;
   Future<bool> _updateEmail(
       String email, int wid, String password, String token) async {
-    final url = 'http://192.168.1.5:8000/client/user/$wid/';
+    final url = 'http://192.168.1.4:8000/client/user/$wid/';
     try {
       final response = await http.patch(url,
           body: {"email": email, "password": password},
@@ -61,7 +61,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
     int wid = ModalRoute.of(context).settings.arguments;
     String token = Provider.of<Auth>(context).token;
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(title: Text('Change Email'),
         actions: <Widget>[
           _isloading
               ? CircularProgressIndicator()
@@ -79,7 +79,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                           _isloading = false;
                         });
                         if (value) Navigator.pop(context);
-                        homeKey.currentState.showSnackBar(SnackBar(content: Text('Email was updated successfully')));
+                        homeKey.currentState.showSnackBar(SnackBar(
+                            content: Text('Email was updated successfully')));
                       }).catchError((e) {
                         setState(() {
                           _isloading = false;
@@ -99,51 +100,57 @@ class _ChangeEmailState extends State<ChangeEmail> {
           key: _formechange,
           child: Column(
             children: <Widget>[
-              TextFormField(
-                controller: email,
-                validator: (value) {
-                  if (!EmailValidator.validate(value))
-                    return "Invalid Email";
-                  else
-                    return null;
-                },
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: "Email",
-                  focusedErrorBorder: OutlineInputBorder(
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: email,
+                  validator: (value) {
+                    if (!EmailValidator.validate(value))
+                      return "Invalid Email";
+                    else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: "Email",
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.red)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(width: 1.0),
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
               ),
-              TextFormField(
-                controller: password,
-                validator: (value) {
-                  if (value.length < 8) return "Invalid Password";
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: "Confirm Password",
-                  focusedErrorBorder: OutlineInputBorder(
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: password,
+                  validator: (value) {
+                    if (value.length < 8) return "Invalid Password";
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: "Confirm Password",
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.red)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(width: 1.0),
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
               ),

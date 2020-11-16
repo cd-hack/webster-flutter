@@ -8,7 +8,7 @@ import '../widgets/alert-box.dart';
 import '../providers/auth.dart';
 
 class ChangeAccountDetails extends StatefulWidget {
-  static const routeName='/changeAccDetails';
+  static const routeName = '/changeAccDetails';
   @override
   _ChangeAccountDetailsState createState() => _ChangeAccountDetailsState();
 }
@@ -19,7 +19,7 @@ class _ChangeAccountDetailsState extends State<ChangeAccountDetails> {
   bool _isloading = false, _isValid = false;
   Future<bool> _updateAccountDetails(
       String accNo, String ifsc, int wid, String password, String token) async {
-    final url = 'http://192.168.1.5:8000/client/user/$wid/';
+    final url = 'http://192.168.1.4:8000/client/user/$wid/';
     try {
       final response = await http.patch(url,
           body: {"accNo": accNo, "ifsc": ifsc, "password": password},
@@ -62,7 +62,7 @@ class _ChangeAccountDetailsState extends State<ChangeAccountDetails> {
     int wid = ModalRoute.of(context).settings.arguments;
     String token = Provider.of<Auth>(context).token;
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(title: Text('Change Payment Details'),
         actions: <Widget>[
           _isloading
               ? CircularProgressIndicator()
@@ -103,78 +103,87 @@ class _ChangeAccountDetailsState extends State<ChangeAccountDetails> {
           key: _formachange,
           child: Column(
             children: <Widget>[
-              TextFormField(
-                keyboardType: TextInputType.number,
-                controller: accNo,
-                validator: (value) {
-                  if (value.length < 9 || value.length > 18)
-                    return "Invalid Account Number";
-                  else
-                    return null;
-                },
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: "Account Number",
-                  focusedErrorBorder: OutlineInputBorder(
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: accNo,
+                  validator: (value) {
+                    if (value.length < 9 || value.length > 18)
+                      return "Invalid Account Number";
+                    else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: "Account Number",
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.red)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(width: 1.0),
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
               ),
-              TextFormField(
-                controller: ifsc,
-                validator: (value) {
-                  if (value.length != 11)
-                    return "Invalid IFSC Code";
-                  else
-                    return null;
-                },
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: "IFSC Code",
-                  focusedErrorBorder: OutlineInputBorder(
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: ifsc,
+                  validator: (value) {
+                    if (value.length != 11)
+                      return "Invalid IFSC Code";
+                    else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: "IFSC Code",
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.red)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(width: 1.0),
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
               ),
-              TextFormField(
-                obscureText: true,
-                controller: password,
-                validator: (value) {
-                  if (value.length < 8) return "Invalid Password";
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: "Confirm Password",
-                  focusedErrorBorder: OutlineInputBorder(
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  obscureText: true,
+                  controller: password,
+                  validator: (value) {
+                    if (value.length < 8) return "Invalid Password";
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: "Confirm Password",
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.red)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(width: 1.0),
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
               ),

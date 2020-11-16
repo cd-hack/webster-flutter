@@ -8,7 +8,7 @@ import '../widgets/alert-box.dart';
 import '../providers/auth.dart';
 
 class ChangePhone extends StatefulWidget {
-  static const routeName='/changePhone';
+  static const routeName = '/changePhone';
   @override
   _ChangePhoneState createState() => _ChangePhoneState();
 }
@@ -19,7 +19,7 @@ class _ChangePhoneState extends State<ChangePhone> {
   bool _isloading = false, _isValid = false;
   Future<bool> _updatePhone(
       String phone, int wid, String password, String token) async {
-    final url = 'http://192.168.1.5:8000/client/user/$wid/';
+    final url = 'http://192.168.1.4:8000/client/user/$wid/';
     try {
       final response = await http.patch(url,
           body: {"phone": phone, "password": password},
@@ -60,7 +60,7 @@ class _ChangePhoneState extends State<ChangePhone> {
     int wid = ModalRoute.of(context).settings.arguments;
     String token = Provider.of<Auth>(context).token;
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(title: Text('Change Phone Number'),
         actions: <Widget>[
           _isloading
               ? CircularProgressIndicator()
@@ -100,53 +100,59 @@ class _ChangePhoneState extends State<ChangePhone> {
           key: _formpchange,
           child: Column(
             children: <Widget>[
-              TextFormField(
-                keyboardType: TextInputType.phone,
-                controller: phone,
-                validator: (value) {
-                  if (value.length != 10)
-                    return "Invalid Phone Number";
-                  else
-                    return null;
-                },
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: "Phone Number",
-                  focusedErrorBorder: OutlineInputBorder(
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  keyboardType: TextInputType.phone,
+                  controller: phone,
+                  validator: (value) {
+                    if (value.length != 10)
+                      return "Invalid Phone Number";
+                    else
+                      return null;
+                  },
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: "Phone Number",
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.red)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(width: 1.0),
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
               ),
-              TextFormField(
-                obscureText: true,
-                controller: password,
-                validator: (value) {
-                  if (value.length < 8) return "Invalid Password";
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.grey),
-                  labelText: "Confirm Password",
-                  focusedErrorBorder: OutlineInputBorder(
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  obscureText: true,
+                  controller: password,
+                  validator: (value) {
+                    if (value.length < 8) return "Invalid Password";
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: "Confirm Password",
+                    focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2, color: Colors.red)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(width: 2)),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(width: 2)),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(width: 1.0),
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
               ),
