@@ -127,6 +127,12 @@ class _EditableFormState extends State<EditableForm> {
             child: ListView(
               children: [
                 Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'http://192.168.1.4:8000/${args['websiteid']}/',
+                      style: TextStyle(fontSize: 20),
+                    )),
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text("You can edit the following fields:"),
                 ),

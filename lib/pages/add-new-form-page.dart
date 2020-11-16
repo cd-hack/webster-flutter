@@ -48,24 +48,13 @@ class _FormPageState extends State<FormPage> {
   Future<Map> _uploadImage(Map userdetails, String token) async {
     final url = 'http://192.168.1.4:8000/client/website/';
     try {
-      print(token);
-      // print({
-      //   "title": userdetails["title"],
-      //   "about": userdetails["about"],
-      //   "templatetype": widget.websiteType,
-      //   "ighandle": userdetails["ighandle"],
-      //   "fburl": userdetails["fburl"],
-      //   "lnurl": userdetails["lnurl"],
-      //   "image": await MultipartFile.fromFile(carousel_image.path),
-      //   "websiteid": userdetails["websiteid"]
-      // });
       Dio dio = new Dio();
       FormData formdata = FormData.fromMap({
         "title": userdetails["title"],
         "about": userdetails["about"],
-        "templatetype": 1,
+        "templatetype":  widget.websiteType,
         "ighandle": userdetails["ighandle"],
-        "fburl": 'https://github.com/',
+        "fburl": userdetails['fburl'] ,
         "lnurl": 'https://github.com/',
         "image": await MultipartFile.fromFile(carousel_image.path),
         "websiteid": userdetails["websiteid"]

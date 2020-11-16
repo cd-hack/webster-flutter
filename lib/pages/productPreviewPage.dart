@@ -80,14 +80,25 @@ class _ProductPreviewPageState extends State<ProductPreviewPage> {
                           ],
                         ),
                         Container(
-                          child: Text(snapshot.data['description']),
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            snapshot.data['description'],
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
-                        Text('REVIEWS'),
+                        Text(
+                          'REVIEWS',
+                          style: TextStyle(fontSize: 25),
+                        ),
                         snapshot.data['reviews'].length == 0
-                            ? Text('No one has reviwed your product yet!')
+                            ? Text(
+                                'No one has reviwed your product yet!',
+                                style:
+                                    TextStyle(fontSize: 20, color: Colors.grey),
+                              )
                             : Column(
                                 children: snapshot.data['reviews']
-                                    .map((e) => Text(e))
+                                    .map((e) => Text(e['review']))
                                     .toList(),
                               )
                       ],

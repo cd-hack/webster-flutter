@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:webster/pages/add-new-form-page.dart';
 import 'package:webster/pages/editable-form-page.dart';
@@ -48,8 +49,8 @@ class MyApp extends StatelessWidget {
               accentColor: Colors.black,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               textTheme: TextTheme(
-                headline1:
-                    TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                headline1: GoogleFonts.openSans(
+                    fontSize: 72.0, fontWeight: FontWeight.bold),
                 // headline6:
                 //     TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
                 bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
