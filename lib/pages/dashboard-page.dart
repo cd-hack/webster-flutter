@@ -15,7 +15,7 @@ class DashBoard extends StatelessWidget {
 
   Future<Map> _fetchDashboard(String email, String token) async {
     Map ret = {};
-    final url = 'http://192.168.1.4:8000/client/user/?email=$email';
+    final url = 'https://websterapp.herokuapp.com/client/user/?email=$email';
     print(url);
     try {
       final response = await http.get(url);
@@ -28,7 +28,7 @@ class DashBoard extends StatelessWidget {
       if (jresponse[0]['websites_owned'].length == 0)
         throw "Currently you don't own any websites,\nCreate one by tapping the plus button below!";
       final websiteid = jresponse[0]['websites_owned'][0];
-      final dashurl = 'http://192.168.1.4:8000/client/dashboard/$websiteid/';
+      final dashurl = 'https://websterapp.herokuapp.com/client/dashboard/$websiteid/';
       final dashres =
           await http.post(dashurl, headers: {'Authorization': 'Token $token'});
       final dashjres = json.decode(dashres.body);

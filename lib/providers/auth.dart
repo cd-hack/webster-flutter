@@ -18,7 +18,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
-    final url = 'http://192.168.1.4:8000/client/login/';
+    final url = 'https://websterapp.herokuapp.com/client/login/';
     try {
       final response =
           await http.post(url, body: {'username': email, 'password': password});
@@ -45,7 +45,7 @@ class Auth with ChangeNotifier {
       String accNo,
       String ifsc,
       String phone}) async {
-    const url = 'http://192.168.1.4:8000/client/user/';
+    const url = 'https://websterapp.herokuapp.com/client/user/';
     try {
       print({
         'email': email,

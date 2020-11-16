@@ -23,7 +23,7 @@ class _ProductListState extends State<ProductList> {
   bool _isloading = true, _get = false;
   List<Map> posts = [];
 
-  String next = "http://192.168.1.4:8000/client/productlist/", email, token;
+  String next = "https://websterapp.herokuapp.com/client/productlist/", email, token;
 
   Future _fetchProducts() async {
     print(next);
@@ -47,7 +47,7 @@ class _ProductListState extends State<ProductList> {
 
   Future<bool> _fetchProductsFromInstagram(String token) async {
     if (wid == null) return false;
-    final url = 'http://192.168.1.4:8000/client/fetchproducts/$wid/';
+    final url = 'https://websterapp.herokuapp.com/client/fetchproducts/$wid/';
     try {
       final response =
           await http.post(url, headers: {'Authorization': 'Token $token'});
@@ -70,7 +70,7 @@ class _ProductListState extends State<ProductList> {
     if (!_get) {
       email = Provider.of<Auth>(context, listen: false).email;
       token = Provider.of<Auth>(context, listen: false).token;
-      final url = 'http://192.168.1.4:8000/client/user/?email=$email';
+      final url = 'https://websterapp.herokuapp.com/client/user/?email=$email';
       final res = await http.get(
         url,
       );

@@ -29,7 +29,7 @@ class _EditableFormState extends State<EditableForm> {
   }
 
   Future<void> _editWebsite(Map<String, dynamic> args, String token) async {
-    final url = 'http://192.168.1.4:8000/client/website/${args['id']}/';
+    final url = 'https://websterapp.herokuapp.com/client/website/${args['id']}/';
     print(args);
     try {
       var response, jresponse;
@@ -129,7 +129,7 @@ class _EditableFormState extends State<EditableForm> {
                 Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      'http://192.168.1.4:8000/${args['websiteid']}/',
+                      'https://websterapp.herokuapp.com/${args['websiteid']}/',
                       style: TextStyle(fontSize: 20),
                     )),
                 Padding(

@@ -35,7 +35,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
   Future<bool> _addCategory(List<String> cat, String token, int wid) async {
     try {
-      final url = 'http://192.168.1.4:8000/client/category/$wid/';
+      final url = 'https://websterapp.herokuapp.com/client/category/$wid/';
       final response = await http.post(url,
           body: json.encode({"category": cat}),
           headers: {
@@ -54,7 +54,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
   Future<bool> _fetchProducts(String token, String wid) async {
     try {
-      final url = 'http://192.168.1.4:8000/client/fetchproducts/$wid/';
+      final url = 'https://websterapp.herokuapp.com/client/fetchproducts/$wid/';
       final response =
           await http.post(url, headers: {"Authorization": "Token $token"});
       final jresponse = json.decode(response.body) as Map;

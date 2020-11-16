@@ -27,7 +27,7 @@ class _AddProductState extends State<AddProduct> {
   List cat;
 
   Future<Map> _getSiteInfo(int wid, String token) async {
-    final url = 'http://192.168.1.4:8000/client/website/$wid/';
+    final url = 'https://websterapp.herokuapp.com/client/website/$wid/';
     try {
       final response =
           await http.get(url, headers: {'Authorization': 'Token $token'});

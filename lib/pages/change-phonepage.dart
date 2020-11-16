@@ -19,7 +19,7 @@ class _ChangePhoneState extends State<ChangePhone> {
   bool _isloading = false, _isValid = false;
   Future<bool> _updatePhone(
       String phone, int wid, String password, String token) async {
-    final url = 'http://192.168.1.4:8000/client/user/$wid/';
+    final url = 'https://websterapp.herokuapp.com/client/user/$wid/';
     try {
       final response = await http.patch(url,
           body: {"phone": phone, "password": password},

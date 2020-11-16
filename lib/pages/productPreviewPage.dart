@@ -12,7 +12,7 @@ class ProductPreviewPage extends StatefulWidget {
 
 class _ProductPreviewPageState extends State<ProductPreviewPage> {
   Future<Map> _fetchProductDetail(int id) async {
-    final url = 'http://192.168.1.4:8000/client/productdetail/$id';
+    final url = 'https://websterapp.herokuapp.com/client/productdetail/$id';
     try {
       final response = await http.get(url);
       final jresponse = json.decode(response.body);

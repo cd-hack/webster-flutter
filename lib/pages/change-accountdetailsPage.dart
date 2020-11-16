@@ -19,7 +19,7 @@ class _ChangeAccountDetailsState extends State<ChangeAccountDetails> {
   bool _isloading = false, _isValid = false;
   Future<bool> _updateAccountDetails(
       String accNo, String ifsc, int wid, String password, String token) async {
-    final url = 'http://192.168.1.4:8000/client/user/$wid/';
+    final url = 'https://websterapp.herokuapp.com/client/user/$wid/';
     try {
       final response = await http.patch(url,
           body: {"accNo": accNo, "ifsc": ifsc, "password": password},
