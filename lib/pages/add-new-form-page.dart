@@ -3,6 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:webster/widgets/alert-box.dart';
 import '../providers/auth.dart';
@@ -48,16 +50,23 @@ class _FormPageState extends State<FormPage> {
   Future<Map> _uploadImage(Map userdetails, String token) async {
     final url = 'https://websterapp.herokuapp.com/client/website/';
     try {
+      final r = await http.get('https://www.instagram.com/${userdetails['ighandle']}/?__a=1');
+      final j = json.decode(r.body) as Map;
+      if(!j.containsKey('graphql')) throw "The given Instagram Profile does not exist !!";
+      if(j['graphql']['user']['is_private']) throw "The given Instagram Profile is Private !!";
+      userdetails['iguserid']=j['graphql']['user']['id'];
+      print(userdetails['iguserid']);
       Dio dio = new Dio();
       FormData formdata = FormData.fromMap({
         "title": userdetails["title"],
         "about": userdetails["about"],
-        "templatetype":  widget.websiteType,
+        "templatetype": widget.websiteType,
         "ighandle": userdetails["ighandle"],
-        "fburl": userdetails['fburl'] ,
+        "fburl": userdetails['fburl'],
         "lnurl": 'https://github.com/',
         "image": await MultipartFile.fromFile(carousel_image.path),
-        "websiteid": userdetails["websiteid"]
+        "websiteid": userdetails["websiteid"],
+        "iguserid":userdetails['iguserid']
       });
       final response = await dio
           .post(url,

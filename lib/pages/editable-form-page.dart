@@ -29,9 +29,17 @@ class _EditableFormState extends State<EditableForm> {
   }
 
   Future<void> _editWebsite(Map<String, dynamic> args, String token) async {
-    final url = 'https://websterapp.herokuapp.com/client/website/${args['id']}/';
+    final url =
+        'https://websterapp.herokuapp.com/client/website/${args['id']}/';
     print(args);
     try {
+      final r = await http.get('https://www.instagram.com/${args['ighandle']}/?__a=1');
+      final j = json.decode(r.body) as Map;
+      if (!j.containsKey('graphql'))
+        throw "The given Instagram Profile does not exist !!";
+      if (j['graphql']['user']['is_private'])
+        throw "The given Instagram Profile is Private !!";
+      args['iguserid'] = j['graphql']['user']['id'];
       var response, jresponse;
       if (carousel_image == null) {
         response = await http.patch(url,
@@ -43,6 +51,7 @@ class _EditableFormState extends State<EditableForm> {
               "fburl": args['fburl'],
               "lnurl": args['lnurl'],
               "websiteid": args['websiteid'],
+              "iguserid": args['iguserid']
             }),
             headers: {
               'Authorization': 'Token $token',
@@ -62,6 +71,7 @@ class _EditableFormState extends State<EditableForm> {
           "fburl": args['fburl'],
           "lnurl": args['lnurl'],
           "websiteid": args['websiteid'],
+          "iguserid": args['iguserid'],
           "image": await MultipartFile.fromFile(carousel_image.path)
         });
         print('loco');
